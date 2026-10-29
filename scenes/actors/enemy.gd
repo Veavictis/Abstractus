@@ -1,6 +1,7 @@
 class_name Enemy
 extends CharacterBody2D
-## A basic melee enemy (placeholder art: a circle). Wanders near home, chases the player when close, and hurts on contact.
+## A basic melee enemy (placeholder art: a circle).
+## Wanders near home, chases the player when close, and hurts on contact.
 ## Drops whatever the level hooks up to `defeated` (level 1 drops a shard).
 
 signal defeated(at: Vector2)
