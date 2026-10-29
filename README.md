@@ -47,6 +47,7 @@ Run the automated playthrough: `godot --headless res://tests/test_level_01.tscn`
 
 Naming: `snake_case` for files and folders, `PascalCase` for node names and `class_name`.
 
-See [docs/level-design.md](docs/level-design.md) for how to build and edit levels,
+See [docs/design-doc.md](docs/design-doc.md) for the game design and the How To Play tutorial plan,
+[docs/level-design.md](docs/level-design.md) for how to build and edit levels,
 [docs/git-workflow.md](docs/git-workflow.md) for branching, commits, and releases, and
 [docs/art-guidelines.md](docs/art-guidelines.md) for pixel scale, Aseprite, and audio formats.
