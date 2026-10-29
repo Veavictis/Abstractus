@@ -102,13 +102,13 @@ Frame counts are starting points for planning; the creator sets the real ones.
    The creator is drawing the art.
 3. **Shoot back.** Once the player finds the weapon, they can shoot enemies.
 4. **Puzzle: timed wall switches.** There is one shooting switch on each of the 4 walls. The player has
-   15 seconds to shoot all 4. If time runs out first, all 4 reset.
+   15 seconds to shoot all 4, counted from the first switch hit. If time runs out first, all 4 reset.
 
 **OPEN**
 
 - Weapon: fire rate, ammo or unlimited, how aiming works (where you face, or right stick), and which button fires.
 - Where the weapon is found, and what the player does before they have it.
-- Switch timer: does the 15 seconds start on the first switch hit, and does the HUD show a countdown?
+- Switch timer: does the HUD show a countdown?
 - What the 4 switches unlock (a gate, the exit, a crystal).
 - The shooting enemy: how it moves, how fast its bullets are, how many hits it takes, and whether it drops a crystal.
 - Do walls and crates block bullets?
@@ -150,6 +150,8 @@ Frame counts are starting points for planning; the creator sets the real ones.
    - Shoots bullets in all directions, in a couple of different patterns.
    - An area attack that fills the whole level every 40 seconds. The only way through is the shield.
    - Takes 300 bullet hits to kill.
+   - **The camera zooms out slightly** for the fight, so the whole boss and its bullets fit on screen.
+     Zooming out for big fights is a mechanic to reuse in the main game.
 4. **The end.** Killing the boss ends the How To Play section.
 
 **OPEN**
@@ -165,9 +167,7 @@ Frame counts are starting points for planning; the creator sets the real ones.
   and whether it has phases.
 - Boss: does melee hurt it, or only bullets? The weapon's fire rate decides how long the fight lasts:
   at 5 shots a second, 300 hits is a full minute of hitting it.
-- Boss size: 5x the player is about 140 to 160 px tall, close to half the 360 px screen. The art guidelines
-  say 48 px for big characters, so the guidelines need updating to match. Does the camera stay the same
-  in the boss fight, or zoom out?
+- Boss camera: how much does it zoom out, and does it ease out when the boss spawns?
 - What happens after the boss: a "tutorial complete" screen, straight into the main game, or back to the title?
 - Do the weapon and shield carry over into the main game?
 

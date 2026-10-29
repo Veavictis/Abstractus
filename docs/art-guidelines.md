@@ -11,7 +11,8 @@
   - 1280x720 / Steam Deck (1280x800): 2x. The Deck's taller screen shows 640x400, with no black bars.
   - 1920x1080: 3x. 2560x1440: 4x. 4K: 6x.
 - **Isometric tiles: 32x16** (2:1 diamond). That's 20 tiles across the screen, with room for gradients.
-- **Characters: about 32 px tall** for standard figures. Go to 48 px only for large or boss characters.
+- **Characters: about 32 px tall** for standard figures. Large characters can go to 48 px.
+- **Bosses** can be much bigger (the How To Play boss is 5x the player). The camera zooms out slightly during boss fights to fit them.
 - **Texture filtering is set to Nearest** project-wide, and 2D transforms snap to whole pixels.
 
 ## Gradients
