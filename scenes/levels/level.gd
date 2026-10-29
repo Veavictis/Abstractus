@@ -1,11 +1,14 @@
 class_name Level
 extends Node2D
 ## Builds a playable level from a text layout, one character per tile:
-##   `#` wall   `.` floor   `P` player start   `E` exit (opens once every shard is collected)
-##   `S` shard   `X` enemy (drops a shard when defeated)
+##   `#` wall   `.` floor   `P` player start   `E` exit
+##   `S` crystal (optional; any left over fly to the player at the end of the level)
+##   `X` circle enemy (melee)   `Q` square enemy (shoots). Both drop a crystal when defeated.
 ##   `H` hazard patrolling along its row   `V` hazard patrolling along its column
 ##   `B` push block   `O` pressure plate   `G` gate (opens once every plate has a block on it)
 ##   `-` safe floor (enemies won't chase you there)   `W` the weapon pickup (on safe floor)
+##   `T` wall switch (a wall with a target; shoot every one before `switch_time` runs out)
+##   `M` where the portal appears once every switch is flipped
 ## Edit the `layout` property in the Inspector (or in the .tscn) to change the map.
 
 const TILE_SIZE := Vector2(32, 16)
@@ -18,10 +21,19 @@ const BLOCK_SCENE := preload("res://scenes/actors/push_block.tscn")
 const PLATE_SCENE := preload("res://scenes/actors/pressure_plate.tscn")
 const GATE_SCENE := preload("res://scenes/actors/gate.tscn")
 const WEAPON_SCENE := preload("res://scenes/actors/weapon_pickup.tscn")
+const SWITCH_SCENE := preload("res://scenes/actors/wall_switch.tscn")
+const PORTAL_SCENE := preload("res://scenes/actors/spawn_portal.tscn")
+## How long the end-of-level crystal magnet runs before the level complete panel shows.
+const MAGNET_TIME := 0.9
 const SAFE_TILES := "-W"
 
 @export var level_name := "Level 1"
 @export_multiline var layout := ""
+@export var start_with_weapon := false
+## Seconds to flip every wall switch, counted from the first one hit.
+@export var switch_time := 15.0
+## How many enemies pour out of the portal.
+@export var portal_wave := 15
 
 var shards_total := 0
 var shards_collected := 0
@@ -30,6 +42,10 @@ var elapsed := 0.0
 var finished := false
 var gates_open := false
 var exit_portal: ExitPortal
+var portal: SpawnPortal
+var switches: Array[WallSwitch] = []
+var switch_time_left := 0.0
+var _portal_spot := Vector2.ZERO
 var _built := false
 var _rows: PackedStringArray
 var _blocks := {}  # Vector2i -> PushBlock
@@ -66,6 +82,7 @@ func _ready() -> void:
 	# The crosshair in the HUD stands in for the mouse cursor.
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	_build()
+	_player.has_weapon = start_with_weapon
 	_player.died.connect(_on_player_died)
 	_player.health_changed.connect(_hud.set_health)
 	_hud.show_level(level_name)
@@ -86,10 +103,16 @@ func _process(delta: float) -> void:
 	if not finished:
 		elapsed += delta
 		_hud.set_time(elapsed)
+	if switch_time_left > 0.0:
+		switch_time_left -= delta
+		if switch_time_left <= 0.0:
+			_reset_switches()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("restart") or (finished and event.is_action_pressed("accept")):
+	if finished and event.is_action_pressed("accept"):
+		Game.go_to_next_level(scene_file_path)
+	elif event.is_action_pressed("restart"):
 		get_tree().reload_current_scene()
 	elif event.is_action_pressed("back"):
 		Game.go_to_title()
@@ -99,7 +122,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func is_walkable(cell: Vector2i) -> bool:
 	if cell.y < 0 or cell.y >= _rows.size() or cell.x < 0 or cell.x >= _rows[cell.y].length():
 		return false
-	return _rows[cell.y][cell.x] != "#" and _rows[cell.y][cell.x] != " "
+	return not _rows[cell.y][cell.x] in "#T "
 
 
 func tile_at(cell: Vector2i) -> String:
@@ -122,12 +145,19 @@ func _build() -> void:
 			if tile == "#":
 				_spawn(WALL_SCENE, pos)
 				continue
+			if tile == "T":
+				var wall_switch: WallSwitch = _spawn(SWITCH_SCENE, pos)
+				wall_switch.flipped.connect(_on_switch_flipped)
+				switches.append(wall_switch)
+				continue
 			floor_cells.append(cell)
 			if tile in SAFE_TILES:
 				safe_cells.append(cell)
 			_build_tile(tile, cell, pos)
 	_floor.set_cells(floor_cells, safe_cells)
-	_update_exit()
+	# Crystals are optional, so the exit is open from the start (a gate may still stand in the way).
+	if exit_portal:
+		exit_portal.unlock()
 	_built = true
 
 
@@ -140,15 +170,17 @@ func _build_tile(tile: String, cell: Vector2i, pos: Vector2) -> void:
 			_spawn_shard(pos)
 		"E":
 			exit_portal = _spawn(EXIT_SCENE, pos)
-			exit_portal.reached.connect(_on_exit_reached)
+			exit_portal.reached.connect(_finish)
 		"H":
 			_spawn_hazard(cell, Vector2i.RIGHT)
 		"V":
 			_spawn_hazard(cell, Vector2i.DOWN)
 		"X":
-			var enemy: Enemy = _spawn(ENEMY_SCENE, pos)
-			enemy.defeated.connect(func(at: Vector2) -> void: _spawn_shard.call_deferred(at))
-			shards_total += 1
+			_spawn_enemy(Enemy.Kind.CIRCLE, pos)
+		"Q":
+			_spawn_enemy(Enemy.Kind.SQUARE, pos)
+		"M":
+			_portal_spot = pos
 		"B":
 			var block: PushBlock = _spawn(BLOCK_SCENE, pos)
 			block.cell = cell
@@ -174,6 +206,22 @@ func _spawn(scene: PackedScene, pos: Vector2) -> Node2D:
 	node.position = pos
 	_world.add_child(node)
 	return node
+
+
+func _spawn_enemy(kind: Enemy.Kind, pos: Vector2) -> void:
+	var enemy: Enemy = ENEMY_SCENE.instantiate()
+	enemy.kind = kind
+	enemy.position = pos
+	_world.add_child(enemy)
+	_track_enemy(enemy)
+
+
+## Every enemy carries a crystal and drops it when defeated.
+func _track_enemy(enemy: Enemy) -> void:
+	enemy.defeated.connect(func(at: Vector2) -> void: _spawn_shard.call_deferred(at))
+	shards_total += 1
+	if _built:
+		_hud.set_shards(shards_collected, shards_total)
 
 
 func _spawn_shard(pos: Vector2) -> void:
@@ -220,17 +268,35 @@ func _update_plates() -> void:
 		_hud.flash_message("A gate opened!")
 
 
-func _update_exit() -> void:
-	if exit_portal and shards_collected >= shards_total and not exit_portal.unlocked:
-		exit_portal.unlock()
-		if _built:
-			_hud.flash_message("The exit is open!")
+func _on_switch_flipped() -> void:
+	if switches.all(func(s: WallSwitch) -> bool: return s.is_on):
+		switch_time_left = 0.0
+		_open_portal()
+	elif switch_time_left <= 0.0:
+		# The clock starts on the first switch hit.
+		switch_time_left = switch_time
+
+
+func _reset_switches() -> void:
+	switch_time_left = 0.0
+	for wall_switch in switches:
+		wall_switch.reset()
+	_hud.flash_message("Too slow! The switches reset.")
+
+
+func _open_portal() -> void:
+	portal = PORTAL_SCENE.instantiate()
+	portal.position = _portal_spot
+	portal.wave_size = portal_wave
+	portal.enemy_spawned.connect(_track_enemy)
+	portal.entered.connect(_finish)
+	_world.add_child(portal)
+	_hud.flash_message("A portal opened!")
 
 
 func _on_shard_collected() -> void:
 	shards_collected += 1
 	_hud.set_shards(shards_collected, shards_total)
-	_update_exit()
 
 
 func _on_player_died() -> void:
@@ -239,9 +305,16 @@ func _on_player_died() -> void:
 	_hud.flash_message("Back to the start...")
 
 
-func _on_exit_reached() -> void:
+## Ends the level: every crystal still on the ground flies to the player, then the complete panel shows.
+func _finish() -> void:
 	if finished:
 		return
 	finished = true
 	_player.controls_enabled = false
-	_hud.show_win(elapsed, deaths)
+	for node in _world.get_children():
+		if node is Shard:
+			node.fly_to(_player)
+	await get_tree().create_timer(MAGNET_TIME).timeout
+	_hud.show_win(
+		elapsed, deaths, shards_collected, shards_total, Game.has_next_level(scene_file_path)
+	)

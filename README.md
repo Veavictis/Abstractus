@@ -24,13 +24,18 @@ A 2D isometric pixel-art game in Godot 4.7, headed for Steam (Windows and Steam 
 | Restart level | R | Y |
 | Back to title / quit | Esc | B or Start |
 
-**Level 1 goal:** collect all 15 crystals to open the exit. The first half has 3 purple enemies and 4 red
-spinners to get past. Halfway through, a green safe room holds the triangle weapon; enemies won't chase you there.
-The second half has 6 more enemies and the crate puzzle: push the crate onto the yellow plate to open the gate to
-the last crystal and the exit. Every enemy drops a crystal (3 melee hits or 4 shots). Losing all 3 health sends
-you back to the start. Got the crate stuck? Press R.
+**Level 1:** reach the exit. The first half has 3 purple circle enemies and 4 red spinners to get past.
+Halfway through, a green safe room holds the triangle weapon; enemies won't chase you there. The second half has
+6 more enemies and the crate puzzle: push the crate onto the yellow plate to open the gate to the exit.
 
-Run the automated playthrough: `godot --headless res://tests/test_level_01.tscn` (CI runs it too).
+**Level 2:** you start with the weapon. Orange square enemies shoot back. Shoot the target on each of the 4 walls
+within 15 seconds of the first one, or they all reset. Then a portal opens in the middle and 15 circles pour out;
+defeat them all and step into the portal.
+
+Crystals are optional: every enemy drops one, and any left on the ground fly to you when you finish a level.
+Losing all 3 health sends you back to the start. Got stuck? Press R.
+
+Run the automated playthroughs: `godot --headless res://tests/test_level_01.tscn` and `test_level_02.tscn` (CI runs both).
 
 ## Layout
 

@@ -26,25 +26,23 @@ lock down the style, the feel, and every game system before the real first level
 | | Level 1: Basics | Level 2: Enemies shoot back | Level 3: Shield and boss |
 | --- | --- | --- | --- |
 | New mechanics | Move, crystals, dodging hazards, melee, the triangle weapon, crate puzzle, exit | Enemies that shoot, timed wall switches | Shield, kill gauge, crate and switch puzzle, boss |
-| Goal | Collect every crystal, reach the exit | **OPEN** | Kill 75 enemies, beat the puzzle, defeat the boss |
-| Status | Playable | To build | To build |
+| Goal | Reach the exit | Flip the 4 switches, beat the portal wave, enter the portal | Kill 75 enemies, beat the puzzle, defeat the boss |
+| Status | Playable | Playable | To build |
 
 ### Shared systems (used by all three levels)
 
-These come from the current level 1 build.
-
 - **Health:** 3 hearts. A hit gives 1 second of invulnerability (the player blinks) and a knockback.
   Losing all health sends you back to the level start; crystals you picked up stay collected.
-- **Crystals:** the collectible. Enemies can carry crystals and drop them on death.
-- **Exit portal:** stays locked until every crystal is collected, then opens.
+- **Crystals (decided):** always optional. Every enemy carries one and drops it on death. When you reach the end
+  of a level, every crystal left on the ground flies to you like a magnet before you go on to the next level.
+- **Exit:** open from the start, since crystals are optional (a gate or puzzle can still stand in the way).
 - **Restart:** R / (Y) reloads the level, the safety net for a stuck puzzle.
-- **Level complete panel:** time and deaths.
+- **Level complete panel:** time, deaths and crystals, then Enter / (A) goes on to the next level.
 
-Suggestions, waiting for the creator's OK:
+Suggestion, waiting for the creator's OK:
 
 - On-screen hints the first time a mechanic appears ("Walk into the crate to push it"), showing the
   right button for keyboard or gamepad.
-- "Continue" on the level complete panel goes to the next tutorial level.
 
 ---
 
@@ -120,18 +118,26 @@ Frame counts are starting points for planning; the creator sets the real ones.
 
 **Teaches:** enemies that shoot, and the timed wall switch puzzle.
 
-**Decided**
+**Decided (built)**
 
-1. **Enemies: squares only.** Level 2's enemies are squares, and they shoot at the player.
+1. **Enemies: squares only.** Squares move and shoot at the player. Their bullets fly as fast as the
+   player's. 3 shots kill one.
 2. **Puzzle: timed wall switches.** There is one shooting switch on each of the 4 walls. The player has
    15 seconds to shoot all 4, counted from the first switch hit. If time runs out first, all 4 reset.
+3. **The portal.** Flipping all 4 switches spawns a portal in the middle of the map. 15 melee circle enemies
+   pour out of it in all directions. Once all 15 are dead, the portal shines brighter, and stepping into it
+   goes to level 3.
+4. The player starts level 2 with the weapon.
 
-**OPEN**
+**Later:** the switch timer has no countdown on screen for now. Later it might get a countdown, or the
+screen might pulse after you hit the first switch.
 
-- Switch timer: does the HUD show a countdown?
-- What the 4 switches unlock (a gate, the exit, a crystal).
-- The square enemy: how it moves, how fast its bullets are, how many hits it takes, and whether it drops a crystal.
-- Level goal: still "collect every crystal, reach the exit"?
+Built as placeholders, waiting for the creator's OK:
+
+- Squares close in to about 3 tiles, stop, and fire one shot every 1.5 seconds, only when no wall or crate
+  is in the way. They take 3 melee hits.
+- The layout: a square room with 4 pillars and 4 short cover walls, 6 squares and 6 crystals.
+- The portal's 15 circles hunt the player from across the room and drop crystals like every enemy.
 
 **Art asset list, level 2**
 
@@ -140,8 +146,9 @@ Frame counts are starting points for planning; the creator sets the real ones.
 | Square enemy idle / walk / shoot | Character | ~32 tall, 4 directions |
 | Square enemy hurt / death | Character | |
 | Enemy projectile | Effect | Plus an impact effect |
-| Wall switch | Prop | 3 states: off, hit (timer running), reset |
-| HUD | UI | Switch timer *(if shown)* |
+| Wall switch | Prop | 2 states: off and flipped |
+| Spawn portal | Prop | Appears, dim while enemies pour out, bright once they're all dead |
+| Switch timer feedback | UI or effect | Later: a countdown or a screen pulse |
 
 ---
 

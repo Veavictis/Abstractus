@@ -12,24 +12,29 @@ One character per tile. Rows run top-left to bottom-right on screen (the grid is
 | `#` | Wall |
 | `.` | Floor |
 | `P` | Player start (exactly one) |
-| `E` | Exit. Opens once every shard is collected. |
-| `S` | Shard |
-| `X` | Enemy. Drops a shard when defeated, so it counts toward the shard total. |
+| `E` | Exit. Open from the start. |
+| `S` | Crystal. Optional; any left on the ground fly to the player at the end of the level. |
+| `X` | Circle enemy (melee). Drops a crystal when defeated. |
+| `Q` | Square enemy (shoots). Drops a crystal when defeated. |
 | `H` / `V` | Hazard that patrols its whole row (`H`) or column (`V`) until it meets a wall |
 | `B` | Pushable crate |
 | `O` | Pressure plate |
 | `G` | Gate. Every gate opens once every plate has a crate on it. |
 | `-` | Safe floor. Enemies stop chasing while the player stands on it. |
 | `W` | The weapon pickup (counts as safe floor) |
+| `T` | Wall switch: a wall block with a target. Shoot every one before the level's **Switch Time** runs out. |
+| `M` | Where the portal appears once every switch is flipped. It pours out **Portal Wave** enemies. |
 
 Keep every row the same length and surround the map with walls.
 `tests/test_level_01.gd` checks that every shard, enemy, crate, plate and the exit can be reached;
 copy it when adding a level.
 
-## Adding level 2
+## Adding a level
 
-1. Duplicate `level_01.tscn` as `level_02.tscn` and change **Level Name** and **Layout**.
-2. Point the "play again" flow at it (for now `Game.FIRST_LEVEL` is the only level; a level list comes next).
+1. Duplicate a level scene (e.g. `level_02.tscn` as `level_03.tscn`) and change **Level Name** and **Layout**.
+   Tick **Start With Weapon** if the player should already have it.
+2. Add its path to `Game.LEVELS` in `scripts/autoload/game.gd`. The level complete panel goes to the next one in the list.
+3. Copy a test from `tests/` and add it to `.github/workflows/ci.yml`.
 
 ## Every level mixes three things
 

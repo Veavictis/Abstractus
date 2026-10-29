@@ -39,3 +39,5 @@ jobs:
           if grep -E "SCRIPT ERROR|Parse Error|Failed to load" import.log; then exit 1; fi
       - name: Play through level 1 (headless smoke test)
         run: timeout 120 godot --headless res://tests/test_level_01.tscn
+      - name: Play through level 2 (headless smoke test)
+        run: timeout 120 godot --headless res://tests/test_level_02.tscn

@@ -18,7 +18,7 @@ func _run() -> void:
 	var world := level.get_node("World")
 
 	_check(level.shards_total == 15, "level 1 has 15 crystals (6 placed, 9 from enemies)")
-	_check(not level.exit_portal.unlocked, "exit starts locked")
+	_check(level.exit_portal.unlocked, "exit is open from the start (crystals are optional)")
 	_check(_reachable(level), "every shard, enemy, block, plate and the exit is reachable")
 
 	var start := player.position
@@ -54,10 +54,10 @@ func _run() -> void:
 	player.shoot()
 	await _frames(30, true)
 	_check(
-		target.health == Enemy.MAX_HEALTH - Enemy.SHOT_DAMAGE,
+		target.health == target.max_health - Enemy.SHOT_DAMAGE,
 		"a fired bullet flies and hits the enemy"
 	)
-	target.health = Enemy.MAX_HEALTH
+	target.health = target.max_health
 	for i in 4:
 		_check(is_instance_valid(target), "enemy survives %d shot(s)" % i)
 		var bullet: Bullet = load("res://scenes/actors/bullet.tscn").instantiate()
@@ -85,16 +85,16 @@ func _run() -> void:
 
 	var shards := world.get_children().filter(func(n: Node) -> bool: return n is Shard)
 	_check(shards.size() == 15, "all 15 crystals exist once enemies drop theirs")
-	for shard: Shard in shards:
+	for shard: Shard in shards.slice(0, 5):
 		shard._on_body_entered(player)
 	await _frames(2)
-	_check(
-		level.shards_collected == 15 and level.exit_portal.unlocked,
-		"collecting every crystal opens the exit"
-	)
+	_check(level.shards_collected == 5, "picking up crystals counts them")
 
 	level.exit_portal._on_body_entered(player)
-	_check(level.finished, "stepping on the open exit completes the level")
+	_check(level.finished, "stepping on the exit completes the level, even with crystals left")
+	await get_tree().create_timer(Level.MAGNET_TIME + 0.2).timeout
+	_check(level.shards_collected == 15, "the leftover crystals fly to the player at the end")
+	_check(Game.has_next_level(level.scene_file_path), "level 2 comes after level 1")
 
 	print("%s: %d failure(s)" % ["PASS" if _failures == 0 else "FAIL", _failures])
 	get_tree().quit(1 if _failures else 0)

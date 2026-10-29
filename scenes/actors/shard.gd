@@ -1,25 +1,46 @@
 class_name Shard
 extends Area2D
-## A collectible. The level counts these; collecting all of them opens the exit.
+## A crystal. Optional: the level counts them, and any left on the ground fly to the player at the end.
 
 signal collected
 
+const MAGNET_SPEED := 60.0
+const MAGNET_ACCEL := 600.0
+
 var _time := randf() * TAU
+var _magnet_target: Node2D
+var _magnet_speed := MAGNET_SPEED
 
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 
+## Pulls the crystal to the target like a magnet; it counts as collected when it arrives.
+func fly_to(target: Node2D) -> void:
+	_magnet_target = target
+
+
 func _process(delta: float) -> void:
 	_time += delta
+	if _magnet_target:
+		_magnet_speed += MAGNET_ACCEL * delta
+		position = position.move_toward(_magnet_target.position, _magnet_speed * delta)
+		if position.distance_to(_magnet_target.position) < 2.0:
+			_collect()
 	queue_redraw()
 
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player:
-		collected.emit()
-		queue_free()
+		_collect()
+
+
+func _collect() -> void:
+	if is_queued_for_deletion():
+		return
+	collected.emit()
+	queue_free()
 
 
 func _draw() -> void:

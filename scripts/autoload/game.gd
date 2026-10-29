@@ -3,7 +3,11 @@ extends Node
 ## Also registers the input actions, so keyboard and gamepad (Steam Deck) work without editor setup.
 
 const TITLE_SCENE := "res://scenes/ui/title_screen.tscn"
-const FIRST_LEVEL := "res://scenes/levels/level_01.tscn"
+## The How To Play levels, in order.
+const LEVELS: Array[String] = [
+	"res://scenes/levels/level_01.tscn",
+	"res://scenes/levels/level_02.tscn",
+]
 const STICK_DEADZONE := 0.25
 
 var version: String = ProjectSettings.get_setting("application/config/version", "0.0.0")
@@ -27,7 +31,20 @@ func _ready() -> void:
 
 
 func start_game() -> void:
-	get_tree().change_scene_to_file(FIRST_LEVEL)
+	get_tree().change_scene_to_file(LEVELS[0])
+
+
+func has_next_level(current: String) -> bool:
+	var index := LEVELS.find(current)
+	return index != -1 and index + 1 < LEVELS.size()
+
+
+## Goes to the level after `current`, or back to the title after the last one.
+func go_to_next_level(current: String) -> void:
+	if has_next_level(current):
+		get_tree().change_scene_to_file(LEVELS[LEVELS.find(current) + 1])
+	else:
+		go_to_title()
 
 
 func go_to_title() -> void:

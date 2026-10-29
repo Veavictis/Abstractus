@@ -51,10 +51,17 @@ func flash_message(text: String) -> void:
 	_message_tween.tween_property(_message, "modulate:a", 0.0, 0.5)
 
 
-func show_win(seconds: float, deaths: int) -> void:
+func show_win(
+	seconds: float, deaths: int, crystals: int, crystals_total: int, has_next: bool
+) -> void:
+	var next := (
+		"Enter / (A): next level"
+		if has_next
+		else "Enter / (A): title screen (level 3 isn't built yet)"
+	)
 	_win_text.text = (
-		"Level complete!\n\nTime %s    Deaths %d\n\nEnter / (A): play again\nEsc / (B): title screen"
-		% [_format_time(seconds), deaths]
+		"Level complete!\n\nTime %s    Deaths %d    Crystals %d / %d\n\n%s\nR / (Y): play again"
+		% [_format_time(seconds), deaths, crystals, crystals_total, next]
 	)
 	_win_panel.show()
 
