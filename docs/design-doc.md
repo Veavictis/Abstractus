@@ -23,11 +23,11 @@ Three short tutorial levels that teach every system in the game. Each level adds
 last, and killing the boss at the end of level 3 finishes the How To Play section. Building these first lets us
 lock down the style, the feel, and every game system before the real first level.
 
-| | Level 1: Basics | Level 2: Ranged combat | Level 3: Shield and boss |
+| | Level 1: Basics | Level 2: Enemies shoot back | Level 3: Shield and boss |
 | --- | --- | --- | --- |
-| New mechanics | Move, crystals, dodging hazards, melee, crate puzzle, exit | Enemies that shoot, the triangle weapon, timed wall switches | Shield, kill gauge, crate and switch puzzle, boss |
+| New mechanics | Move, crystals, dodging hazards, melee, the triangle weapon, crate puzzle, exit | Enemies that shoot, timed wall switches | Shield, kill gauge, crate and switch puzzle, boss |
 | Goal | Collect every crystal, reach the exit | **OPEN** | Kill 75 enemies, beat the puzzle, defeat the boss |
-| Status | Playable (today's level 1) | To build | To build |
+| Status | Playable (today's level 1, weapon to add) | To build | To build |
 
 ### Shared systems (used by all three levels)
 
@@ -50,8 +50,8 @@ Suggestions, waiting for the creator's OK:
 
 ### Level 1: Basics
 
-**Teaches:** moving on the isometric grid, collecting crystals, dodging hazards, the crate-on-plate puzzle,
-and melee combat.
+**Teaches:** moving on the isometric grid, collecting crystals, dodging hazards, melee combat, the triangle weapon,
+and the crate-on-plate puzzle.
 
 This is the level 1 that's playable today (`scenes/levels/level_01.tscn`). It becomes tutorial level 1.
 
@@ -63,6 +63,19 @@ This is the level 1 that's playable today (`scenes/levels/level_01.tscn`). It be
 4. **The puzzle box.** Push the crate onto the yellow plate by walking into it. The plate opens the gate to the last crystal and the exit.
 5. **Enemies: circles.** Purple circle enemies (melee) wander, chase when you're close, and hurt on contact. 3 melee hits
    (J / Space / (X)) defeat one, and it drops a crystal.
+
+**Decided (to build)**
+
+6. **The weapon.** The player gets the triangle weapon in level 1: a simple weapon made entirely of
+   triangles that shoots triangles. Name TBD. The creator is drawing the art. Moved here from level 2 because
+   dodging enemies while pushing crates with nothing but melee is frustrating.
+
+**OPEN**
+
+- Where in level 1 the weapon is found (at the start, or partway), and whether melee stays.
+- Weapon: fire rate, ammo or unlimited, how aiming works (where you face, or right stick), and which button fires.
+- How many shots a circle enemy takes.
+- Do walls and crates block bullets?
 
 **To do:** rename shards to crystals in the code, HUD, and docs.
 
@@ -84,52 +97,46 @@ squares (level 2), and a circle-square hybrid (level 3).
 | Crystal pickup effect | Effect | ~16 to 24 | 4 to 6 frames |
 | Red spinner hazard | Hazard | ~16 | Spin loop |
 | Crate | Prop | 32x16 base | 1 frame |
+| Triangle weapon | Pickup + held | | Creator is drawing it. A pickup version and a held version |
+| Triangle projectile | Effect | | Plus an impact effect |
+| Player shoot | Character | ~32 tall | 4 directions, plus muzzle flash if wanted |
 | Pressure plate | Floor tile | 32x16 | 2 frames: up and pressed |
 | Gate | Prop | 32x16 base | Closed and open |
 | Exit portal | Prop | ~32 | Locked and unlocked |
 | Floor tiles | Tileset | 32x16 | A few variations to break up repetition |
 | Wall tiles | Tileset | 32x16 base | Straight, inner corner, outer corner, end pieces |
-| HUD | UI | | Heart (full and empty), crystal icon, font |
+| HUD | UI | | Heart (full and empty), crystal icon, weapon icon, font |
 
 Frame counts are starting points for planning; the creator sets the real ones.
 
 ---
 
-### Level 2: Ranged combat
+### Level 2: Enemies shoot back
 
-**Teaches:** enemies that shoot, the triangle weapon, and the timed wall switch puzzle.
+**Teaches:** enemies that shoot, and the timed wall switch puzzle.
 
 **Decided**
 
 1. **Enemies: squares only.** Level 2's enemies are squares, and they shoot at the player.
-2. **The weapon.** A simple weapon made entirely of triangles that shoots triangles. Name TBD.
-   The creator is drawing the art.
-3. **Shoot back.** Once the player finds the weapon, they can shoot enemies.
-4. **Puzzle: timed wall switches.** There is one shooting switch on each of the 4 walls. The player has
+2. **Puzzle: timed wall switches.** There is one shooting switch on each of the 4 walls. The player has
    15 seconds to shoot all 4, counted from the first switch hit. If time runs out first, all 4 reset.
 
 **OPEN**
 
-- Weapon: fire rate, ammo or unlimited, how aiming works (where you face, or right stick), and which button fires.
-- Where the weapon is found, and what the player does before they have it.
 - Switch timer: does the HUD show a countdown?
 - What the 4 switches unlock (a gate, the exit, a crystal).
 - The square enemy: how it moves, how fast its bullets are, how many hits it takes, and whether it drops a crystal.
-- Do walls and crates block bullets?
 - Level goal: still "collect every crystal, reach the exit"?
 
 **Art asset list, level 2**
 
 | Asset | Type | Notes |
 | --- | --- | --- |
-| Triangle weapon | Pickup + held | Creator is drawing it. A pickup version and a held version |
-| Triangle projectile | Effect | Plus an impact effect |
-| Player shoot | Character | 4 directions, plus muzzle flash if wanted |
 | Square enemy idle / walk / shoot | Character | ~32 tall, 4 directions |
 | Square enemy hurt / death | Character | |
 | Enemy projectile | Effect | Plus an impact effect |
 | Wall switch | Prop | 3 states: off, hit (timer running), reset |
-| HUD | UI | Weapon icon, switch timer *(if shown)* |
+| HUD | UI | Switch timer *(if shown)* |
 
 ---
 
@@ -207,8 +214,9 @@ The player has to do these in order: **kill 75 enemies → the crates and switch
 
 1. Floor and wall tiles, the player idle and walk. These set the style for everything else.
 2. Crystal, red spinner, crate, plate, gate, exit portal.
-3. Circle enemy, melee swing, HUD hearts and crystal icon. Level 1 is then fully drawn.
-4. The triangle weapon and its projectile, then the rest of level 2, then level 3, then the boss.
+3. Circle enemy, melee swing, the triangle weapon and its projectile, HUD hearts and crystal icon.
+   Level 1 is then fully drawn.
+4. The rest of level 2, then level 3, then the boss.
 
 Each piece can replace the placeholder shapes in the game one at a time (see `docs/level-design.md`,
 "Replacing placeholder art").
