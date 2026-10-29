@@ -36,7 +36,7 @@ bandwidth per month; keep huge working files lean or outside the repo if it gets
 
 - **CI** (every pull request and push to `main`): `gdlint`/`gdformat` on GDScript, and a headless
   Godot import that fails on script or resource errors.
-- **Export builds** (tags `v*` or manual run from the Actions tab): exports Windows and Linux builds
+- **Export builds** (tags `v*` or manual run from the Actions tab): exports Windows and Linux (Steam Deck) builds
   and attaches them as downloadable artifacts.
 
 ## Releasing
