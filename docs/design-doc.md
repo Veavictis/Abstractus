@@ -27,7 +27,7 @@ lock down the style, the feel, and every game system before the real first level
 | --- | --- | --- | --- |
 | New mechanics | Move, crystals, dodging hazards, melee, the triangle weapon, crate puzzle, exit | Enemies that shoot, timed wall switches | Shield, kill gauge, crate and switch puzzle, boss |
 | Goal | Collect every crystal, reach the exit | **OPEN** | Kill 75 enemies, beat the puzzle, defeat the boss |
-| Status | Playable (today's level 1, weapon to add) | To build | To build |
+| Status | Playable | To build | To build |
 
 ### Shared systems (used by all three levels)
 
@@ -55,29 +55,37 @@ and the crate-on-plate puzzle.
 
 This is the level 1 that's playable today (`scenes/levels/level_01.tscn`). It becomes tutorial level 1.
 
+**Layout (decided):** double the size of the original level, in two sections.
+
+- **Section 1, dodge:** get past 3 enemies and 4 red spinners with only the melee swing.
+- **Safe spot in the middle:** a small room where enemies stop chasing. The weapon is here.
+- **Section 2, fight:** more enemies (6), now that you can shoot them, and the same crate-on-plate puzzle.
+
 **Mechanics (built)**
 
 1. **Navigation.** Move with WASD, arrows, left stick or D-pad. Diagonals run along the isometric grid.
-2. **Crystals.** 4 crystals lie in the open; 2 more are carried by enemies (6 total).
+2. **Crystals.** 6 lie in the open and 9 are carried by enemies (15 total). Collect them all to open the exit.
 3. **Dodging.** Red spinners patrol a row or column and hurt on touch.
-4. **The puzzle box.** Push the crate onto the yellow plate by walking into it. The plate opens the gate to the last crystal and the exit.
-5. **Enemies: circles.** Purple circle enemies (melee) wander, chase when you're close, and hurt on contact. 3 melee hits
-   (J / Space / (X)) defeat one, and it drops a crystal.
+4. **Enemies: circles.** Purple circle enemies (melee only) wander, chase when you're close, and hurt on contact.
+   They take 3 melee hits or 4 shots, and drop a crystal.
+5. **Melee stays.** J / Space / (X) swings at whatever is in front of you.
+6. **The weapon.** A simple weapon made entirely of triangles that shoots triangles. Name TBD; the creator is
+   drawing the art. Found in the safe room. Moved here from level 2 because dodging enemies while pushing crates
+   with nothing but melee is frustrating.
+   - **Aiming:** the mouse cursor is a small aiming target. The player faces the cursor and shoots toward it.
+   - **Fire rate:** 2 shots a second (hold the left mouse button). No reloading for now.
+7. **The puzzle box.** Push the crate onto the yellow plate by walking into it. The plate opens the gate to the
+   last crystal and the exit.
 
-**Decided (to build)**
-
-6. **The weapon.** The player gets the triangle weapon in level 1: a simple weapon made entirely of
-   triangles that shoots triangles. Name TBD. The creator is drawing the art. Moved here from level 2 because
-   dodging enemies while pushing crates with nothing but melee is frustrating.
+Built as placeholders, waiting for the creator's OK: bullets break on walls, crates and closed gates;
+the safe room floor is tinted green.
 
 **OPEN**
 
-- Where in level 1 the weapon is found (at the start, or partway), and whether melee stays.
-- Weapon: fire rate, ammo or unlimited, how aiming works (where you face, or right stick), and which button fires.
-- How many shots a circle enemy takes.
-- Do walls and crates block bullets?
+- Gamepad / Steam Deck aiming and shooting (right stick and a trigger, or the Deck's trackpad as a mouse?).
+- Are the "flying objects" in section 1 the red spinners, or a new kind of hazard?
 
-**To do:** rename shards to crystals in the code, HUD, and docs.
+**To do:** rename shards to crystals in the code (the HUD already says crystals).
 
 **Art asset list, level 1**
 

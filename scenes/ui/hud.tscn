@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_hud"]
+[ext_resource type="Script" path="res://scenes/ui/crosshair.gd" id="2_crosshair"]
 
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -12,7 +13,7 @@ offset_right = 200.0
 offset_bottom = 24.0
 theme_override_colors/font_color = Color(0.368627, 0.886275, 0.941176, 1)
 theme_override_font_sizes/font_size = 12
-text = "Shards 0 / 0"
+text = "Crystals 0 / 0"
 
 [node name="Health" type="Label" parent="."]
 offset_left = 8.0
@@ -49,7 +50,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 0.5)
 theme_override_font_sizes/font_size = 10
-text = "Move: WASD / stick   Attack: J / Space / (X)   Push: walk into crates   R / (Y): restart   Esc: title"
+text = "Move: WASD / stick   Melee: J / Space / (X)   Shoot: click (once you find the weapon)   R: restart   Esc: title"
 horizontal_alignment = 1
 
 [node name="Message" type="Label" parent="."]
@@ -81,3 +82,6 @@ theme_override_font_sizes/font_size = 16
 text = "Level complete!"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Crosshair" type="Node2D" parent="."]
+script = ExtResource("2_crosshair")

@@ -19,6 +19,8 @@ One character per tile. Rows run top-left to bottom-right on screen (the grid is
 | `B` | Pushable crate |
 | `O` | Pressure plate |
 | `G` | Gate. Every gate opens once every plate has a crate on it. |
+| `-` | Safe floor. Enemies stop chasing while the player stands on it. |
+| `W` | The weapon pickup (counts as safe floor) |
 
 Keep every row the same length and surround the map with walls.
 `tests/test_level_01.gd` checks that every shard, enemy, crate, plate and the exit can be reached;

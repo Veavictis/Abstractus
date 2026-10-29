@@ -17,7 +17,7 @@ func _run() -> void:
 	var player: Player = level.get_node("World/Player")
 	var world := level.get_node("World")
 
-	_check(level.shards_total == 6, "level 1 has 6 shards (4 placed, 2 from enemies)")
+	_check(level.shards_total == 15, "level 1 has 15 crystals (6 placed, 9 from enemies)")
 	_check(not level.exit_portal.unlocked, "exit starts locked")
 	_check(_reachable(level), "every shard, enemy, block, plate and the exit is reachable")
 
@@ -27,28 +27,65 @@ func _run() -> void:
 	Input.action_release("move_right")
 	_check(player.position.x > start.x + 10.0, "player moves right with input")
 
-	# Puzzle: push the block 3 tiles along +x onto the plate.
+	# Weapon: no shooting before the pickup, then 4 shots defeat an enemy.
+	_check(not player.has_weapon, "player starts without the weapon")
+	player.shoot()
+	await _frames(1)
+	_check(_first(world, Bullet) == null, "can't shoot before finding the weapon")
+	var weapon: WeaponPickup = _first(world, WeaponPickup)
+	_check(
+		level.tile_at(Level.world_to_grid(weapon.position)) == "W",
+		"the weapon sits in the safe room"
+	)
+	weapon._on_body_entered(player)
+	_check(player.has_weapon, "touching the weapon picks it up")
+	var target: Enemy = get_tree().get_nodes_in_group("enemies")[0]
+	# A real shot: line up 4 tiles apart along an open row, face the enemy, fire, and let it fly.
+	target.set_physics_process(false)
+	target.position = Level.grid_to_world(Vector2i(35, 5))
+	player.position = Level.grid_to_world(Vector2i(31, 5))
+	# Facing is in input space (vertical doubled), so this aims straight down the row.
+	player.facing = Vector2(1, 1).normalized()
+	player.shoot()
+	await _frames(30, true)
+	_check(
+		target.health == Enemy.MAX_HEALTH - Enemy.SHOT_DAMAGE,
+		"a fired bullet flies and hits the enemy"
+	)
+	target.health = Enemy.MAX_HEALTH
+	for i in 4:
+		_check(is_instance_valid(target), "enemy survives %d shot(s)" % i)
+		var bullet: Bullet = load("res://scenes/actors/bullet.tscn").instantiate()
+		world.add_child(bullet)
+		bullet._on_body_entered(target)
+	await _frames(2)
+	_check(not is_instance_valid(target), "4 shots defeat an enemy")
+
+	# Back to the safe room, so no enemy dies on top of the player and drops a crystal into their hands.
+	player.position = Level.grid_to_world(Vector2i(21, 9))
+
+	# Puzzle: push the block 4 tiles along +x onto the plate.
 	var block: PushBlock = _first(world, PushBlock)
-	for i in 3:
+	for i in 4:
 		block.push(Vector2i.RIGHT)
 		await get_tree().create_timer(PushBlock.SLIDE_TIME + 0.1).timeout
 	_check(level.gates_open, "pushing the block onto the plate opens the gate")
 
-	# Combat: each enemy takes 3 hits and drops a shard.
+	# Combat: each enemy takes 3 melee hits and drops a crystal.
 	for enemy: Enemy in get_tree().get_nodes_in_group("enemies").duplicate():
-		for i in Enemy.MAX_HEALTH:
+		for i in 3:
 			enemy.take_hit(enemy.global_position + Vector2(-1, 0))
 	await _frames(3)
 	_check(get_tree().get_nodes_in_group("enemies").is_empty(), "enemies can be defeated")
 
 	var shards := world.get_children().filter(func(n: Node) -> bool: return n is Shard)
-	_check(shards.size() == 6, "all 6 shards exist once enemies drop theirs")
+	_check(shards.size() == 15, "all 15 crystals exist once enemies drop theirs")
 	for shard: Shard in shards:
 		shard._on_body_entered(player)
 	await _frames(2)
 	_check(
-		level.shards_collected == 6 and level.exit_portal.unlocked,
-		"collecting every shard opens the exit"
+		level.shards_collected == 15 and level.exit_portal.unlocked,
+		"collecting every crystal opens the exit"
 	)
 
 	level.exit_portal._on_body_entered(player)
@@ -73,7 +110,7 @@ func _reachable(level: Level) -> bool:
 	for y in rows.size():
 		var row := rows[y].strip_edges()
 		for x in row.length():
-			if row[x] in "SXBOE" and not seen.has(Vector2i(x, y)):
+			if row[x] in "SXBOEW" and not seen.has(Vector2i(x, y)):
 				return false
 	return true
 

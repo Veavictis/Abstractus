@@ -5,6 +5,7 @@ extends Node2D
 ##   `S` shard   `X` enemy (drops a shard when defeated)
 ##   `H` hazard patrolling along its row   `V` hazard patrolling along its column
 ##   `B` push block   `O` pressure plate   `G` gate (opens once every plate has a block on it)
+##   `-` safe floor (enemies won't chase you there)   `W` the weapon pickup (on safe floor)
 ## Edit the `layout` property in the Inspector (or in the .tscn) to change the map.
 
 const TILE_SIZE := Vector2(32, 16)
@@ -16,6 +17,8 @@ const ENEMY_SCENE := preload("res://scenes/actors/enemy.tscn")
 const BLOCK_SCENE := preload("res://scenes/actors/push_block.tscn")
 const PLATE_SCENE := preload("res://scenes/actors/pressure_plate.tscn")
 const GATE_SCENE := preload("res://scenes/actors/gate.tscn")
+const WEAPON_SCENE := preload("res://scenes/actors/weapon_pickup.tscn")
+const SAFE_TILES := "-W"
 
 @export var level_name := "Level 1"
 @export_multiline var layout := ""
@@ -60,6 +63,8 @@ static func screen_dir_to_grid(dir: Vector2) -> Vector2i:
 
 
 func _ready() -> void:
+	# The crosshair in the HUD stands in for the mouse cursor.
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	_build()
 	_player.died.connect(_on_player_died)
 	_player.health_changed.connect(_hud.set_health)
@@ -67,6 +72,14 @@ func _ready() -> void:
 	_hud.set_shards(shards_collected, shards_total)
 	_hud.set_health(_player.health, Player.MAX_HEALTH)
 	_hud.set_deaths(deaths)
+
+
+func _exit_tree() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
+func _physics_process(_delta: float) -> void:
+	_player.in_safe_zone = tile_at(world_to_grid(_player.position)) in SAFE_TILES
 
 
 func _process(delta: float) -> void:
@@ -98,6 +111,7 @@ func _build() -> void:
 	for y in _rows.size():
 		_rows[y] = _rows[y].strip_edges()
 	var floor_cells: Array[Vector2i] = []
+	var safe_cells: Array[Vector2i] = []
 	for y in _rows.size():
 		for x in _rows[y].length():
 			var cell := Vector2i(x, y)
@@ -109,8 +123,10 @@ func _build() -> void:
 				_spawn(WALL_SCENE, pos)
 				continue
 			floor_cells.append(cell)
+			if tile in SAFE_TILES:
+				safe_cells.append(cell)
 			_build_tile(tile, cell, pos)
-	_floor.set_cells(floor_cells)
+	_floor.set_cells(floor_cells, safe_cells)
 	_update_exit()
 	_built = true
 
@@ -146,6 +162,11 @@ func _build_tile(tile: String, cell: Vector2i, pos: Vector2) -> void:
 			_plates[cell] = plate
 		"G":
 			_gates.append(_spawn(GATE_SCENE, pos))
+		"W":
+			var weapon: WeaponPickup = _spawn(WEAPON_SCENE, pos)
+			weapon.picked_up.connect(
+				_hud.flash_message.bind("You found a weapon! Aim with the mouse, click to shoot.")
+			)
 
 
 func _spawn(scene: PackedScene, pos: Vector2) -> Node2D:

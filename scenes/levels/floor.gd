@@ -4,12 +4,18 @@ extends Node2D
 const LIGHT := Color("2e2a45")
 const DARK := Color("27233b")
 const EDGE := Color("37325a")
+const SAFE_LIGHT := Color("2a4038")
+const SAFE_DARK := Color("243830")
 
 var cells: Array[Vector2i] = []
+var safe_cells := {}  # Vector2i -> true
 
 
-func set_cells(new_cells: Array[Vector2i]) -> void:
+func set_cells(new_cells: Array[Vector2i], new_safe_cells: Array[Vector2i] = []) -> void:
 	cells = new_cells
+	safe_cells.clear()
+	for cell in new_safe_cells:
+		safe_cells[cell] = true
 	queue_redraw()
 
 
@@ -24,5 +30,9 @@ func _draw() -> void:
 				center + Vector2(-16, 0)
 			]
 		)
-		draw_colored_polygon(diamond, LIGHT if (cell.x + cell.y) % 2 == 0 else DARK)
+		var even := (cell.x + cell.y) % 2 == 0
+		if safe_cells.has(cell):
+			draw_colored_polygon(diamond, SAFE_LIGHT if even else SAFE_DARK)
+		else:
+			draw_colored_polygon(diamond, LIGHT if even else DARK)
 		draw_polyline(PackedVector2Array([diamond[3], diamond[0], diamond[1]]), EDGE)

@@ -17,14 +17,17 @@ A 2D isometric pixel-art game in Godot 4.7, headed for Steam (Windows and Steam 
 | Action | Keyboard | Gamepad / Steam Deck |
 | --- | --- | --- |
 | Move | WASD or arrow keys | Left stick or D-pad |
-| Attack | J or Space | X |
+| Melee | J or Space | X |
+| Aim | Mouse (the crosshair) | |
+| Shoot (after finding the weapon) | Left click (hold for 2 shots a second) | |
 | Push a crate | Walk into it | Walk into it |
 | Restart level | R | Y |
 | Back to title / quit | Esc | B or Start |
 
-**Level 1 goal:** collect all 6 shards to open the exit. Four lie around the map, and the two purple
-enemies each drop one when defeated (3 hits). The last shard and the exit sit behind a gate: push the
-crate onto the yellow pressure plate to open it. Red spinners hurt on touch. Losing all 3 health sends
+**Level 1 goal:** collect all 15 crystals to open the exit. The first half has 3 purple enemies and 4 red
+spinners to get past. Halfway through, a green safe room holds the triangle weapon; enemies won't chase you there.
+The second half has 6 more enemies and the crate puzzle: push the crate onto the yellow plate to open the gate to
+the last crystal and the exit. Every enemy drops a crystal (3 melee hits or 4 shots). Losing all 3 health sends
 you back to the start. Got the crate stuck? Press R.
 
 Run the automated playthrough: `godot --headless res://tests/test_level_01.tscn` (CI runs it too).

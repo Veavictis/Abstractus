@@ -6,7 +6,10 @@ extends CharacterBody2D
 
 signal defeated(at: Vector2)
 
-const MAX_HEALTH := 3
+## Health in points so melee and bullets can do different damage: 3 melee hits or 4 shots.
+const MAX_HEALTH := 12
+const MELEE_DAMAGE := 4
+const SHOT_DAMAGE := 3
 const CHASE_SPEED := 40.0
 const WANDER_SPEED := 18.0
 const SIGHT_RANGE := 110.0
@@ -35,20 +38,24 @@ func _physics_process(delta: float) -> void:
 	var player := _find_player()
 	var move := Vector2.ZERO
 	if _stun_left <= 0.0:
-		if player and global_position.distance_to(player.global_position) <= SIGHT_RANGE:
+		if player and not player.in_safe_zone and _sees(player):
 			move = (player.global_position - global_position).normalized() * CHASE_SPEED
 		else:
 			move = _wander(delta)
 	velocity = move + _knockback
 	_knockback = _knockback.move_toward(Vector2.ZERO, KNOCKBACK * 5.0 * delta)
 	move_and_slide()
-	if player and global_position.distance_to(player.global_position) <= CONTACT_RANGE:
+	if (
+		player
+		and not player.in_safe_zone
+		and global_position.distance_to(player.global_position) <= CONTACT_RANGE
+	):
 		player.take_hit(global_position)
 	queue_redraw()
 
 
-func take_hit(from: Vector2) -> void:
-	health -= 1
+func take_hit(from: Vector2, damage := MELEE_DAMAGE) -> void:
+	health -= damage
 	_flash_left = 0.1
 	_stun_left = STUN_TIME
 	_knockback = (global_position - from).normalized() * KNOCKBACK
@@ -67,6 +74,10 @@ func _wander(delta: float) -> Vector2:
 	return (_wander_target - global_position).normalized() * WANDER_SPEED
 
 
+func _sees(player: Player) -> bool:
+	return global_position.distance_to(player.global_position) <= SIGHT_RANGE
+
+
 func _find_player() -> Player:
 	return get_tree().get_first_node_in_group("player") as Player
 
@@ -81,5 +92,5 @@ func _draw() -> void:
 	draw_circle(Vector2(0, -9), 7.0, body)
 	draw_rect(Rect2(-4, -12, 2, 3), Color("ffe066"))
 	draw_rect(Rect2(2, -12, 2, 3), Color("ffe066"))
-	for i in health:
-		draw_rect(Rect2(-5 + i * 4, -21, 3, 2), Color("e8485f"))
+	draw_rect(Rect2(-6, -21, 12, 2), Color("3a1d4f"))
+	draw_rect(Rect2(-6, -21, round(12.0 * health / MAX_HEALTH), 2), Color("e8485f"))

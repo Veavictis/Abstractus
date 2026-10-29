@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/actors/weapon_pickup.gd" id="1_weapon"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_weapon"]
+radius = 8.0
+
+[node name="WeaponPickup" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_weapon")
+
+[node name="Pickup" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_weapon")

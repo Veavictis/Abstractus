@@ -17,6 +17,7 @@ func _ready() -> void:
 	_add_action("accept", [KEY_ENTER, KEY_KP_ENTER], [JOY_BUTTON_A])
 	_add_action("attack", [KEY_J, KEY_SPACE], [JOY_BUTTON_X])
 	_add_action("restart", [KEY_R], [JOY_BUTTON_Y])
+	_add_mouse_action("shoot", MOUSE_BUTTON_LEFT)
 	_add_action("back", [KEY_ESCAPE], [JOY_BUTTON_START, JOY_BUTTON_B])
 
 
@@ -26,6 +27,15 @@ func start_game() -> void:
 
 func go_to_title() -> void:
 	get_tree().change_scene_to_file(TITLE_SCENE)
+
+
+func _add_mouse_action(action: StringName, button: MouseButton) -> void:
+	if InputMap.has_action(action):
+		return
+	InputMap.add_action(action)
+	var event := InputEventMouseButton.new()
+	event.button_index = button
+	InputMap.action_add_event(action, event)
 
 
 func _add_action(

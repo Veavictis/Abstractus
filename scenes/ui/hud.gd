@@ -24,7 +24,7 @@ func show_level(level_name: String) -> void:
 
 
 func set_shards(collected: int, total: int) -> void:
-	_shards.text = "Shards %d / %d" % [collected, total]
+	_shards.text = "Crystals %d / %d" % [collected, total]
 
 
 func set_health(health: int, max_health: int) -> void:
