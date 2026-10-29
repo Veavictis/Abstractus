@@ -1,0 +1,95 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/title_screen.gd" id="1_title"]
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_title")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0784314, 0.0784314, 0.109804, 1)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 70.0
+offset_bottom = 120.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.368627, 0.886275, 0.941176, 1)
+theme_override_font_sizes/font_size = 40
+text = "ABSTRACTUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Story" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 120.0
+offset_top = 135.0
+offset_right = -120.0
+offset_bottom = 200.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.92, 1)
+theme_override_font_sizes/font_size = 12
+text = "The world has come undone into loose shapes and broken light. Gather the scattered shards, outwit the old mechanisms, and fight past what guards them to find the way out."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Prompt" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 230.0
+offset_bottom = 254.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.94902, 0.756863, 0.305882, 1)
+theme_override_font_sizes/font_size = 16
+text = "Press Enter or (A) to start"
+horizontal_alignment = 1
+
+[node name="Controls" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.5)
+theme_override_font_sizes/font_size = 10
+text = "Move: WASD / arrows / left stick     Attack: J / Space / (X)     Restart: R / (Y)
+Esc / (B): back or quit"
+horizontal_alignment = 1
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -18.0
+offset_right = -6.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.3)
+theme_override_font_sizes/font_size = 8
+text = "v0.1.0"
+horizontal_alignment = 2

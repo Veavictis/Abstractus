@@ -18,9 +18,9 @@ jobs:
           python-version: "3.12"
       - run: pip install "gdtoolkit==4.*"
       - name: gdlint
-        run: gdlint scenes scripts
+        run: gdlint scenes scripts tests
       - name: gdformat (check only)
-        run: gdformat --check scenes scripts
+        run: gdformat --check scenes scripts tests
 
   import-check:
     runs-on: ubuntu-latest
@@ -37,3 +37,5 @@ jobs:
         run: |
           godot --headless --import 2>&1 | tee import.log
           if grep -E "SCRIPT ERROR|Parse Error|Failed to load" import.log; then exit 1; fi
+      - name: Play through level 1 (headless smoke test)
+        run: timeout 120 godot --headless res://tests/test_level_01.tscn

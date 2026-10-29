@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_level"]
+[ext_resource type="Script" path="res://scenes/levels/floor.gd" id="2_floor"]
+[ext_resource type="PackedScene" path="res://scenes/actors/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4_hud"]
+
+[node name="Level01" type="Node2D"]
+script = ExtResource("1_level")
+level_name = "Level 1: The Scattered Room"
+layout = "######################
+#P.....#.............#
+#......#....S........#
+#..##..#.......X.....#
+#..##......####......#
+#.......H..#..#......#
+#####......#S.#......#
+#...#......#..#....V.#
+#.S.#......##.#......#
+#...#................#
+#...######...........#
+#..........H.....#####
+#....B..O........G...#
+#................#.S.#
+#............X...#.E.#
+######################"
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Color" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0784314, 0.0784314, 0.109804, 1)
+
+[node name="Floor" type="Node2D" parent="."]
+script = ExtResource("2_floor")
+
+[node name="World" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="World" instance=ExtResource("3_player")]
+
+[node name="Hud" parent="." instance=ExtResource("4_hud")]
