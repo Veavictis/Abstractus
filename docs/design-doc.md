@@ -61,12 +61,16 @@ This is the level 1 that's playable today (`scenes/levels/level_01.tscn`). It be
 2. **Crystals.** 4 crystals lie in the open; 2 more are carried by enemies (6 total).
 3. **Dodging.** Red spinners patrol a row or column and hurt on touch.
 4. **The puzzle box.** Push the crate onto the yellow plate by walking into it. The plate opens the gate to the last crystal and the exit.
-5. **Enemies.** Purple melee enemies wander, chase when you're close, and hurt on contact. 3 melee hits
+5. **Enemies: circles.** Purple circle enemies (melee) wander, chase when you're close, and hurt on contact. 3 melee hits
    (J / Space / (X)) defeat one, and it drops a crystal.
 
 **To do:** rename shards to crystals in the code, HUD, and docs.
 
 **Art asset list, level 1**
+
+All art is drawn by the creator. Until then, enemies use placeholder shapes: circles (level 1),
+squares (level 2), and a circle-square hybrid (level 3).
+
 
 | Asset | Type | Size (px) | Frames / notes |
 | --- | --- | --- | --- |
@@ -74,8 +78,8 @@ This is the level 1 that's playable today (`scenes/levels/level_01.tscn`). It be
 | Player walk | Character | ~32 tall | 4 directions, 4 to 6 frames |
 | Player melee swing | Character + effect | ~32 tall | 4 directions, 3 to 4 frames, plus a swing arc effect |
 | Player hurt | Character | ~32 tall | 1 to 2 frames (the blink is done in code) |
-| Melee enemy idle / walk | Character | ~32 tall | 4 directions, 4 frames |
-| Melee enemy hurt / death | Character | ~32 tall | 1 hurt frame, 4 to 6 death frames |
+| Circle enemy idle / walk | Character | ~32 tall | 4 directions, 4 frames |
+| Circle enemy hurt / death | Character | ~32 tall | 1 hurt frame, 4 to 6 death frames |
 | Crystal | Pickup | ~12 to 16 | Shimmer or bob loop |
 | Crystal pickup effect | Effect | ~16 to 24 | 4 to 6 frames |
 | Red spinner hazard | Hazard | ~16 | Spin loop |
@@ -97,7 +101,7 @@ Frame counts are starting points for planning; the creator sets the real ones.
 
 **Decided**
 
-1. **Enemies shoot.** Level 2 adds enemies that shoot at the player.
+1. **Enemies: squares only.** Level 2's enemies are squares, and they shoot at the player.
 2. **The weapon.** A simple weapon made entirely of triangles that shoots triangles. Name TBD.
    The creator is drawing the art.
 3. **Shoot back.** Once the player finds the weapon, they can shoot enemies.
@@ -110,7 +114,7 @@ Frame counts are starting points for planning; the creator sets the real ones.
 - Where the weapon is found, and what the player does before they have it.
 - Switch timer: does the HUD show a countdown?
 - What the 4 switches unlock (a gate, the exit, a crystal).
-- The shooting enemy: how it moves, how fast its bullets are, how many hits it takes, and whether it drops a crystal.
+- The square enemy: how it moves, how fast its bullets are, how many hits it takes, and whether it drops a crystal.
 - Do walls and crates block bullets?
 - Level goal: still "collect every crystal, reach the exit"?
 
@@ -121,8 +125,8 @@ Frame counts are starting points for planning; the creator sets the real ones.
 | Triangle weapon | Pickup + held | Creator is drawing it. A pickup version and a held version |
 | Triangle projectile | Effect | Plus an impact effect |
 | Player shoot | Character | 4 directions, plus muzzle flash if wanted |
-| Shooting enemy idle / walk / shoot | Character | ~32 tall, 4 directions |
-| Shooting enemy hurt / death | Character | |
+| Square enemy idle / walk / shoot | Character | ~32 tall, 4 directions |
+| Square enemy hurt / death | Character | |
 | Enemy projectile | Effect | Plus an impact effect |
 | Wall switch | Prop | 3 states: off, hit (timer running), reset |
 | HUD | UI | Weapon icon, switch timer *(if shown)* |
@@ -140,6 +144,8 @@ The player has to do these in order: **kill 75 enemies → the crates and switch
 1. **Shield.** The first and only power-up in level 3. It surrounds the player and blocks all damage for
    3 seconds. The player can move while it's up. 30 second cooldown.
 2. **Kill gauge.** Kill 75 enemies to fill the gauge. When it's full, the crates and switches spawn.
+   Three enemy types spawn: circles, squares, and a **circle-square hybrid** that shoots faster and larger
+   bullets than the other two.
 3. **Puzzle: crates and switches, all 4 walls, 45 seconds.**
    1. Push a crate (onto its plate) by one wall.
    2. A switch appears on the opposite wall.
@@ -159,7 +165,9 @@ The player has to do these in order: **kill 75 enemies → the crates and switch
 
 **OPEN**
 
-- Kill gauge: which enemies spawn (melee, shooting, or both), how many at once, and where they come from.
+- Kill gauge: how many enemies at once, the mix of the three types, and where they come from.
+- Hybrid: does it melee too, and how many hits does it take?
+- Circles in level 3: still melee only, or do they shoot too?
 - Kill gauge: do enemies keep spawning during the puzzle?
 - Puzzle: does the 45 seconds show on the HUD?
 - Puzzle: does a crate need to go onto a plate, or does moving it anywhere count?
@@ -180,6 +188,8 @@ The player has to do these in order: **kill 75 enemies → the crates and switch
 | --- | --- | --- |
 | Shield | Effect | Surrounds the player, 3 second loop, plus pop-up and fade-out |
 | Shield pickup / source | Prop | Depends on how the player gets it |
+| Hybrid enemy idle / walk / shoot / hurt / death | Character | ~32 tall, 4 directions |
+| Hybrid projectile | Effect | Larger than the square's bullets |
 | Kill gauge | UI | Empty, filling, full (75 kills) |
 | Enemy spawn effect | Effect | Shows where an enemy appears *(if wanted)* |
 | HUD shield icon | UI | With a 30 second cooldown display |
@@ -198,7 +208,7 @@ The player has to do these in order: **kill 75 enemies → the crates and switch
 
 1. Floor and wall tiles, the player idle and walk. These set the style for everything else.
 2. Crystal, red spinner, crate, plate, gate, exit portal.
-3. Melee enemy, melee swing, HUD hearts and crystal icon. Level 1 is then fully drawn.
+3. Circle enemy, melee swing, HUD hearts and crystal icon. Level 1 is then fully drawn.
 4. The triangle weapon and its projectile, then the rest of level 2, then level 3, then the boss.
 
 Each piece can replace the placeholder shapes in the game one at a time (see `docs/level-design.md`,
