@@ -145,7 +145,7 @@ The player has to do these in order: **kill 75 enemies → the crates and switch
    3 seconds. The player can move while it's up. 30 second cooldown.
 2. **Kill gauge.** Kill 75 enemies to fill the gauge. When it's full, the crates and switches spawn.
    Three enemy types spawn: circles, squares, and a **circle-square hybrid** that shoots faster and larger
-   bullets than the other two.
+   bullets than the squares. Circles only melee; squares and the hybrid shoot.
 3. **Puzzle: crates and switches, all 4 walls, 45 seconds.**
    1. Push a crate (onto its plate) by one wall.
    2. A switch appears on the opposite wall.
@@ -167,7 +167,6 @@ The player has to do these in order: **kill 75 enemies → the crates and switch
 
 - Kill gauge: how many enemies at once, the mix of the three types, and where they come from.
 - Hybrid: does it melee too, and how many hits does it take?
-- Circles in level 3: still melee only, or do they shoot too?
 - Kill gauge: do enemies keep spawning during the puzzle?
 - Puzzle: does the 45 seconds show on the HUD?
 - Puzzle: does a crate need to go onto a plate, or does moving it anywhere count?
