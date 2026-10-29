@@ -25,8 +25,8 @@ lock down the style, the feel, and every game system before the real first level
 
 | | Level 1: Basics | Level 2: Ranged combat | Level 3: Shield and boss |
 | --- | --- | --- | --- |
-| New mechanics | Move, crystals, dodging hazards, melee, crate puzzle, exit | Enemies that shoot, the triangle weapon, timed wall switches | Shield, crate and switch puzzle, boss |
-| Goal | Collect every crystal, reach the exit | **OPEN** | Beat the puzzle, then defeat the boss |
+| New mechanics | Move, crystals, dodging hazards, melee, crate puzzle, exit | Enemies that shoot, the triangle weapon, timed wall switches | Shield, kill gauge, crate and switch puzzle, boss |
+| Goal | Collect every crystal, reach the exit | **OPEN** | Kill 75 enemies, beat the puzzle, defeat the boss |
 | Status | Playable (today's level 1) | To build | To build |
 
 ### Shared systems (used by all three levels)
@@ -131,13 +131,16 @@ Frame counts are starting points for planning; the creator sets the real ones.
 
 ### Level 3: Shield and boss
 
-**Teaches:** the shield, the crate and switch puzzle, and the boss fight.
+**Teaches:** the shield, the kill gauge, the crate and switch puzzle, and the boss fight.
+
+The player has to do these in order: **kill 75 enemies → the crates and switches spawn → beat the puzzle → the boss spawns.**
 
 **Decided**
 
 1. **Shield.** The first and only power-up in level 3. It surrounds the player and blocks all damage for
    3 seconds. The player can move while it's up. 30 second cooldown.
-2. **Puzzle: crates and switches, all 4 walls, 45 seconds.**
+2. **Kill gauge.** Kill 75 enemies to fill the gauge. When it's full, the crates and switches spawn.
+3. **Puzzle: crates and switches, all 4 walls, 45 seconds.**
    1. Push a crate (onto its plate) by one wall.
    2. A switch appears on the opposite wall.
    3. Move over there and shoot it.
@@ -145,20 +148,20 @@ Frame counts are starting points for planning; the creator sets the real ones.
    - All of it within 45 seconds.
    - **Fail:** the crates and switches reset.
    - **Succeed:** the boss spawns.
-3. **Boss.** A jumble of abstract shapes, drawn by the creator.
+4. **Boss.** A jumble of abstract shapes, drawn by the creator.
    - 5x bigger than the player sprite.
    - Shoots bullets in all directions, in a couple of different patterns.
    - An area attack that fills the whole level every 40 seconds. The only way through is the shield.
    - Takes 300 bullet hits to kill.
    - **The camera zooms out slightly** for the fight, so the whole boss and its bullets fit on screen.
      Zooming out for big fights is a mechanic to reuse in the main game.
-4. **The end.** Killing the boss ends the How To Play section.
+5. **The end.** Killing the boss ends the How To Play section.
 
 **OPEN**
 
-- **Kill gauge:** the first outline had "kill enemies until a gauge fills, then the boss spawns". With the
-  puzzle now spawning the boss, is the gauge still in, and if so where does it go?
-- Puzzle: are there regular enemies during the puzzle, and does the 45 seconds show on the HUD?
+- Kill gauge: which enemies spawn (melee, shooting, or both), how many at once, and where they come from.
+- Kill gauge: do enemies keep spawning during the puzzle?
+- Puzzle: does the 45 seconds show on the HUD?
 - Puzzle: does a crate need to go onto a plate, or does moving it anywhere count?
 - Shield: which button, and how the player gets it (a pickup, a shrine, given at the start of level 3).
 - Shield vs. the boss's area attack: the shield cooldown (30 s) is shorter than the area attack timer (40 s),
@@ -177,6 +180,8 @@ Frame counts are starting points for planning; the creator sets the real ones.
 | --- | --- | --- |
 | Shield | Effect | Surrounds the player, 3 second loop, plus pop-up and fade-out |
 | Shield pickup / source | Prop | Depends on how the player gets it |
+| Kill gauge | UI | Empty, filling, full (75 kills) |
+| Enemy spawn effect | Effect | Shows where an enemy appears *(if wanted)* |
 | HUD shield icon | UI | With a 30 second cooldown display |
 | Wall switch (appearing) | Prop | Appear animation, on top of the level 2 switch states |
 | Crates and plates | Prop | Reuse level 1, or new versions |
