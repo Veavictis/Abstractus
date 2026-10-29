@@ -1,0 +1,32 @@
+# Godot 4
+.godot/
+.import/
+/android/
+*.translation
+export_credentials.cfg
+
+# Build output
+/build/
+*.exe
+*.pck
+*.x86_64
+*.dmg
+*.zip
+
+# Steam SDK credentials / local config (never commit)
+steam_appid.txt
+*.vdf.local
+
+# Mono / C# (if ever used)
+.mono/
+data_*/
+mono_crash.*.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~

@@ -1,0 +1,45 @@
+name: Export builds
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: 4.7.2
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - preset: Windows Desktop
+            dir: windows
+            file: Abstractus.exe
+          - preset: Linux
+            dir: linux
+            file: Abstractus.x86_64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Install Godot and export templates
+        run: |
+          base="https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable"
+          curl -sSLo godot.zip "$base/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip
+          sudo mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+          curl -sSLo templates.tpz "$base/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q templates.tpz
+          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mv templates/* "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable/"
+      - name: Export ${{ matrix.preset }}
+        run: |
+          mkdir -p "build/${{ matrix.dir }}"
+          godot --headless --import
+          godot --headless --export-release "${{ matrix.preset }}" "build/${{ matrix.dir }}/${{ matrix.file }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: abstractus-${{ matrix.dir }}-${{ github.ref_name }}
+          path: build/${{ matrix.dir }}
