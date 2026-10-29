@@ -1,5 +1,12 @@
 extends Node2D
-## The aiming target that replaces the mouse cursor inside a level.
+## The aiming target that replaces the mouse cursor inside a level. Hidden while aiming with a gamepad.
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		visible = true
+	elif event is InputEventJoypadMotion and absf(event.axis_value) > 0.5:
+		visible = false
 
 
 func _process(_delta: float) -> void:

@@ -2,7 +2,8 @@ class_name Player
 extends CharacterBody2D
 ## The player. Input moves in screen space with the vertical axis halved,
 ## so diagonal input runs exactly along the 2:1 isometric grid.
-## Once the mouse moves, the player faces the cursor, and with the weapon, shoots toward it.
+## The player faces the cursor once the mouse moves, or wherever the right stick points,
+## and with the weapon, shoots that way.
 ## Placeholder art is drawn in `_draw()`; swap it for a Sprite2D or AnimatedSprite2D later.
 
 signal health_changed(health: int, max_health: int)
@@ -58,7 +59,11 @@ func _physics_process(delta: float) -> void:
 		input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 		if Input.is_action_just_pressed("attack"):
 			attack()
-	if controls_enabled and _aim_with_mouse:
+	var stick_aim := Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
+	if controls_enabled and stick_aim != Vector2.ZERO:
+		_aim_with_mouse = false
+		facing = stick_aim.normalized()
+	elif controls_enabled and _aim_with_mouse:
 		var aim := _mouse_aim()
 		if aim != Vector2.ZERO:
 			facing = Vector2(aim.x, aim.y * 2.0).normalized()

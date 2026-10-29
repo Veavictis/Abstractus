@@ -57,7 +57,7 @@ This is the level 1 that's playable today (`scenes/levels/level_01.tscn`). It be
 
 **Layout (decided):** double the size of the original level, in two sections.
 
-- **Section 1, dodge:** get past 3 enemies and 4 red spinners with only the melee swing.
+- **Section 1, dodge:** get past 3 enemies and 4 red spinners (the "flying objects") with only the melee swing.
 - **Safe spot in the middle:** a small room where enemies stop chasing. The weapon is here.
 - **Section 2, fight:** more enemies (6), now that you can shoot them, and the same crate-on-plate puzzle.
 
@@ -73,17 +73,14 @@ This is the level 1 that's playable today (`scenes/levels/level_01.tscn`). It be
    drawing the art. Found in the safe room. Moved here from level 2 because dodging enemies while pushing crates
    with nothing but melee is frustrating.
    - **Aiming:** the mouse cursor is a small aiming target. The player faces the cursor and shoots toward it.
-   - **Fire rate:** 2 shots a second (hold the left mouse button). No reloading for now.
+     On gamepad / Steam Deck, the left stick moves and the right stick aims.
+   - **Firing:** hold left click, or the right trigger (RT / R2) on gamepad.
+   - **Fire rate:** 2 shots a second. No reloading for now.
 7. **The puzzle box.** Push the crate onto the yellow plate by walking into it. The plate opens the gate to the
    last crystal and the exit.
 
 Built as placeholders, waiting for the creator's OK: bullets break on walls, crates and closed gates;
 the safe room floor is tinted green.
-
-**OPEN**
-
-- Gamepad / Steam Deck aiming and shooting (right stick and a trigger, or the Deck's trackpad as a mouse?).
-- Are the "flying objects" in section 1 the red spinners, or a new kind of hazard?
 
 **To do:** rename shards to crystals in the code (the HUD already says crystals).
 

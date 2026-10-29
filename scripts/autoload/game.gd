@@ -17,6 +17,11 @@ func _ready() -> void:
 	_add_action("accept", [KEY_ENTER, KEY_KP_ENTER], [JOY_BUTTON_A])
 	_add_action("attack", [KEY_J, KEY_SPACE], [JOY_BUTTON_X])
 	_add_action("restart", [KEY_R], [JOY_BUTTON_Y])
+	_add_action("aim_left", [], [], JOY_AXIS_RIGHT_X, -1.0)
+	_add_action("aim_right", [], [], JOY_AXIS_RIGHT_X, 1.0)
+	_add_action("aim_up", [], [], JOY_AXIS_RIGHT_Y, -1.0)
+	_add_action("aim_down", [], [], JOY_AXIS_RIGHT_Y, 1.0)
+	_add_action("shoot", [], [], JOY_AXIS_TRIGGER_RIGHT, 1.0)
 	_add_mouse_action("shoot", MOUSE_BUTTON_LEFT)
 	_add_action("back", [KEY_ESCAPE], [JOY_BUTTON_START, JOY_BUTTON_B])
 
@@ -30,9 +35,8 @@ func go_to_title() -> void:
 
 
 func _add_mouse_action(action: StringName, button: MouseButton) -> void:
-	if InputMap.has_action(action):
-		return
-	InputMap.add_action(action)
+	if not InputMap.has_action(action):
+		InputMap.add_action(action)
 	var event := InputEventMouseButton.new()
 	event.button_index = button
 	InputMap.action_add_event(action, event)

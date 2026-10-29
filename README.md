@@ -18,8 +18,8 @@ A 2D isometric pixel-art game in Godot 4.7, headed for Steam (Windows and Steam 
 | --- | --- | --- |
 | Move | WASD or arrow keys | Left stick or D-pad |
 | Melee | J or Space | X |
-| Aim | Mouse (the crosshair) | |
-| Shoot (after finding the weapon) | Left click (hold for 2 shots a second) | |
+| Aim | Mouse (the crosshair) | Right stick |
+| Shoot (after finding the weapon) | Left click (hold for 2 shots a second) | Right trigger (RT / R2) |
 | Push a crate | Walk into it | Walk into it |
 | Restart level | R | Y |
 | Back to title / quit | Esc | B or Start |

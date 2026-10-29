@@ -39,6 +39,11 @@ func _run() -> void:
 	)
 	weapon._on_body_entered(player)
 	_check(player.has_weapon, "touching the weapon picks it up")
+	Input.action_press("aim_up")
+	await _frames(2, true)
+	Input.action_release("aim_up")
+	_check(player.facing.is_equal_approx(Vector2.UP), "the right stick aims")
+
 	var target: Enemy = get_tree().get_nodes_in_group("enemies")[0]
 	# A real shot: line up 4 tiles apart along an open row, face the enemy, fire, and let it fly.
 	target.set_physics_process(false)
