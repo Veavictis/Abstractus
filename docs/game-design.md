@@ -12,6 +12,9 @@ decided by the creator, not filled in by tools.
 Genre: survivors-like (auto-attacking, wave survival), modeled on Vampire Survivors'
 gameplay and presentation.
 
+The Vampire Survivors name is an internal reference only. It will never be mentioned
+on the Steam page or in marketing.
+
 ## What makes Abstractus different
 
 1. **Abstract world.** The player and everything they fight are a series of abstract
@@ -89,7 +92,3 @@ These are for the creator to decide. Nothing here has been chosen.
 
 **HUB**
 - What does the HUB contain besides the gallery?
-
-**Release / legal**
-- How should the Steam page describe the game's relationship to Vampire Survivors?
-  (Gameplay mechanics are generally free to reuse; names, art, and branding are not.)
