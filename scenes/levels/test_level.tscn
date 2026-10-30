@@ -5,8 +5,19 @@
 [ext_resource type="PackedScene" path="res://scenes/actors/player.tscn" id="3_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/cursor.tscn" id="4_cursor"]
 
+[sub_resource type="Environment" id="Environment_glow"]
+background_mode = 3
+background_canvas_max_layer = 100
+glow_enabled = true
+glow_intensity = 1.0
+glow_blend_mode = 0
+glow_hdr_threshold = 1.0
+
 [node name="TestLevel" type="Node2D"]
 script = ExtResource("1_level")
+
+[node name="Glow" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_glow")
 
 [node name="Background" type="Node2D" parent="."]
 script = ExtResource("2_bg")

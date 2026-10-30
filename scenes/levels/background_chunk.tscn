@@ -1,11 +1,16 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/levels/background_chunk.gd" id="1_chunk"]
+[ext_resource type="Shader" path="res://assets/shaders/shimmer_white.gdshader" id="2_shimmer"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_shimmer"]
+shader = ExtResource("2_shimmer")
 
 [node name="BackgroundChunk" type="Node2D" unique_id=1722317446]
 script = ExtResource("1_chunk")
 
 [node name="Art" type="Sprite2D" parent="." unique_id=169858734]
+material = SubResource("ShaderMaterial_shimmer")
 z_index = -100
 centered = false
 

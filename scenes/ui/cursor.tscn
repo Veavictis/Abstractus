@@ -6,4 +6,5 @@
 layer = 100
 
 [node name="Sprite" type="Sprite2D" parent="."]
+modulate = Color(1.8, 1.8, 1.8, 1)
 script = ExtResource("1_cursor")

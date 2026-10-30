@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/actors/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/components/art_sprite.gd" id="2_art"]
+[ext_resource type="PackedScene" path="res://scenes/effects/rainbow_trail.tscn" id="3_trail"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 14.0
@@ -14,6 +15,8 @@ collision_layer = 1
 collision_mask = 8
 motion_mode = 1
 script = ExtResource("1_player")
+
+[node name="RainbowTrail" parent="." instance=ExtResource("3_trail")]
 
 [node name="Sprite" type="Sprite2D" parent="."]
 script = ExtResource("2_art")
