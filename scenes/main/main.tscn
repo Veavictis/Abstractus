@@ -6,16 +6,16 @@
 script = ExtResource("1_main")
 
 [node name="Background" type="ColorRect" parent="."]
-offset_right = 1920.0
-offset_bottom = 1080.0
+offset_right = 960.0
+offset_bottom = 540.0
 color = Color(0.0784314, 0.0784314, 0.109804, 1)
 
 [node name="Title" type="Label" parent="."]
-offset_left = 760.0
-offset_top = 500.0
-offset_right = 1160.0
-offset_bottom = 580.0
-theme_override_font_sizes/font_size = 48
+offset_left = 380.0
+offset_top = 250.0
+offset_right = 580.0
+offset_bottom = 290.0
+theme_override_font_sizes/font_size = 24
 text = "Abstractus"
 horizontal_alignment = 1
 vertical_alignment = 1
