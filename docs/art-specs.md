@@ -67,6 +67,8 @@ the level in Godot. Suggested starting points:
 - Standard canvas: **32x32** (suggested), same as the player.
 - Size tiers for later: small 16x16, standard 32x32, large 64x64, elite / boss 96x96
   or 128x128.
+- Big enemies can also be normal sprites scaled up in code, but scaled pixels look
+  chunkier than art drawn at full size.
 
 ## 6. Enemy projectiles (base sizes)
 
