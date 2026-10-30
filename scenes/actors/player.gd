@@ -13,6 +13,10 @@ const SHOT_SCENE := preload("res://scenes/actors/player_shot.tscn")
 @export var speed := 120.0
 @export var max_health := 10
 @export var fire_interval := 0.6
+## Point dots within this many pixels of the player float into it. Upgrades can raise it.
+@export var pickup_radius := 32.0
+## Speed, in pixels per second, at which pulled-in dots start flying. Upgrades can raise it.
+@export var pickup_speed := 120.0
 ## Seconds between contact hits while an enemy is touching the player.
 @export var hurt_interval := 0.5
 

@@ -1,13 +1,19 @@
 class_name PointDrop
 extends Area2D
-## A glowing point dot. The player collects it by touching it.
+## A glowing point dot. Once the player comes within its `pickup_radius`, the dot floats
+## into the player, speeding up, and is collected on touch.
 
 ## Placeholder dot size in pixels, used until the kind's PNG exists.
 const PLACEHOLDER_SIZE := 7
 ## Room around the art for its glow, in pixels.
 const GLOW_PADDING := 3
+## How fast a pulled-in dot speeds up, in pixels per second per second.
+const PULL_ACCELERATION := 600.0
 
 var kind: PointDropKind
+
+var _player: Player
+var _pull_speed := 0.0
 
 @onready var _sprite: Sprite2D = $Sprite
 
@@ -23,6 +29,19 @@ func _ready() -> void:
 	_sprite.material = _sprite.material.duplicate()
 	_sprite.material.set_shader_parameter("pulse_amount", kind.glow_pulse)
 	body_entered.connect(_on_body_entered)
+
+
+func _physics_process(delta: float) -> void:
+	if _player == null:
+		var player := get_tree().get_first_node_in_group("player") as Player
+		if player and global_position.distance_to(player.global_position) <= player.pickup_radius:
+			_player = player
+			_pull_speed = player.pickup_speed
+		return
+	if not is_instance_valid(_player):
+		return
+	_pull_speed += PULL_ACCELERATION * delta
+	global_position = global_position.move_toward(_player.global_position, _pull_speed * delta)
 
 
 func _on_body_entered(body: Node2D) -> void:
