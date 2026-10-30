@@ -6,14 +6,11 @@ Status, 2026-10-30. **Decided** by the creator:
   wanted into level design.
 - Levels: **seamless background chunks**, no tiles.
 - All art, including existing art to import, is **pixel art**.
+- Sprite scale: **48x48** for the player and standard enemies, so characters look
+  bigger with room for detail. The other sizes below are scaled to match, as suggestions.
+- Background chunks: **1024x1024**.
 
-Everything else below is still an option with a suggested default; the creator picks.
-
-**Open: sprite sizes at 960x540.** The sizes in sections 4 to 7 were suggested for a
-640x360 base. At 960x540 the same canvas looks two-thirds as big on screen. Either keep
-them (smaller sprites, more zoomed-out view, more room for crowds) or scale them by 1.5x
-(player and standard enemy 48x48, projectiles 12x12 / 24x24 / 48x48) to keep the same
-on-screen size.
+Anything marked "suggested" or "open" below is not decided yet; the creator picks.
 
 Tool: everything is drawn in Aseprite. Existing art will also be imported later.
 
@@ -47,53 +44,46 @@ fractional scaling there would fill the screen but make pixel sizes slightly une
   placed on top, with collision where needed.
 - Tiles (Aseprite Tilemap mode + Godot `TileMapLayer`) were considered and declined.
 
-## 3. Level canvas size
+## 3. Level canvas size (decided: 1024x1024 chunks)
 
-Levels are seamless painted chunks that line up edge to edge. Chunk canvas options
-(open):
-
-- 960x540: exactly one screen.
-- 1024x1024: square, easy to repeat in every direction.
-- 512x512: smaller files, repeats more visibly.
-
-Level size (open): endless (chunks repeat), or a bounded area made of N x M chunks.
-
-- Props: multiples of 16 (32x32, 32x64, 64x64).
-- Stage shapes to choose from: endless in every direction, endless in one direction
-  (corridor), or a closed arena with walls.
+- Each chunk is a **1024x1024** seamless painting that lines up edge to edge and can
+  repeat in every direction.
+- Level size (open): endless (chunks repeat), or a bounded area made of N x M chunks.
+- Stage shape (open): endless in every direction, endless in one direction (corridor),
+  or a closed arena with walls.
+- Props (suggested): multiples of 24 (48x48, 48x96, 96x96).
 - Aseprite tip: View > Tiled Mode shows the canvas repeated, to check seams.
 
-## 4. Player sprite
+## 4. Player sprite (decided: 48x48)
 
-- Canvas: **32x32** per frame (suggested). Keep the figure about 24 to 28 px tall with
+- Canvas: **48x48** per frame. Suggested: keep the figure about 36 to 42 px tall, with
   room around it for animation and outlines.
-- Alternative: 48x48 if the player needs more detail.
-- Animations go in one Aseprite file with tags (idle, walk, hurt, death) and export as
-  a sprite sheet.
+- Every frame of an animation is the same size. Suggested: one Aseprite file with tags
+  (idle, walk, hurt, death), exported as a sprite sheet.
 
-## 5. Enemies (standard size)
+## 5. Enemies (decided standard: 48x48)
 
-- Standard canvas: **32x32** (suggested), same as the player.
-- Size tiers for later: small 16x16, standard 32x32, large 64x64, elite / boss 96x96
-  or 128x128.
+- Standard canvas: **48x48**, same as the player.
+- Size tiers for later (suggested): small 24x24, standard 48x48, large 96x96,
+  elite / boss 144x144 or 192x192.
 - Big enemies can also be normal sprites scaled up in code, but scaled pixels look
   chunkier than art drawn at full size.
 
-## 6. Enemy projectiles (base sizes)
+## 6. Enemy projectiles (base sizes, suggested)
 
-- Small: **8x8** (pellets, sparks)
-- Medium: **16x16** (orbs, shards)
-- Large: **32x32** (big blasts)
-- Tip: odd canvases (7x7, 15x15) give a true center pixel, so round shapes stay
+- Small: **12x12** (pellets, sparks)
+- Medium: **24x24** (orbs, shards)
+- Large: **48x48** (big blasts)
+- Tip: odd canvases (11x11, 23x23) give a true center pixel, so round shapes stay
   symmetric.
 
-## 7. Player projectiles (base sizes)
+## 7. Player projectiles (base sizes, suggested)
 
-- Base: **16x16** (bolts, knives, orbs)
-- Large: 32x32
-- Long or thin shots: 32x16 or 32x8, drawn facing right (the game rotates them)
-- Areas / auras around the player: 64x64 to 128x128 (code can grow them on level up)
-- Hit effects / sparks: 16x16 or 32x32 frames
+- Base: **24x24** (bolts, knives, orbs)
+- Large: 48x48
+- Long or thin shots: 48x24 or 48x12, drawn facing right (the game rotates them)
+- Areas / auras around the player: 96x96 to 192x192 (code can grow them on level up)
+- Hit effects / sparks: 24x24 or 48x48 frames
 
 ## Imported existing art (decided: all pixel art)
 
