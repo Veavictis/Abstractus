@@ -1,7 +1,7 @@
 # Art test level
 
-`scenes/levels/test_level.tscn` is a bare-bones level for trying art in motion. It is the
-main scene for now, so **F5** in Godot runs it.
+`scenes/levels/test_level.tscn` is a bare-bones level for trying art in motion. Press **F5** in Godot, then
+**Play** on the placeholder title screen.
 
 Everything you see is a **placeholder**: grey boxes and a grid background. No creative
 choices are baked in. Speeds, health, fire rate and spawn rate are plain numbers on each
@@ -11,6 +11,7 @@ node in the Inspector, to tune or replace.
 
 - Move: WASD, arrow keys, or the left stick / D-pad on a gamepad
 - Restart: R, or the Back / Select button
+- Pause menu (Resume, Quit to Title, Exit Game): Escape, or Start on a gamepad
 - Aim: the mouse, or the right stick on a gamepad. The player fires automatically toward
   the aim and faces it. Moving the mouse switches back from the stick. At 0 HP the level
   restarts.

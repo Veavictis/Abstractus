@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://scripts/components/chunk_grid.gd" id="2_bg"]
 [ext_resource type="PackedScene" path="res://scenes/actors/player.tscn" id="3_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/cursor.tscn" id="4_cursor"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="5_pause"]
 
 
 [node name="TestLevel" type="Node2D"]
@@ -24,3 +25,5 @@ offset_bottom = 30.0
 text = "HP 10   Kills 0   0:00"
 
 [node name="Cursor" parent="." instance=ExtResource("4_cursor")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("5_pause")]
