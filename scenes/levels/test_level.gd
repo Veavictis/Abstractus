@@ -37,11 +37,26 @@ func _process(delta: float) -> void:
 
 
 func _spawn_enemy() -> void:
+	var spawn_position: Variant = _free_spawn_position()
+	if spawn_position == null:
+		return
 	var enemy: Enemy = ENEMY_SCENE.instantiate()
-	enemy.position = _player.position + Vector2.from_angle(randf() * TAU) * spawn_distance
+	enemy.position = spawn_position
 	enemy.target = _player
 	enemy.killed.connect(func() -> void: _kills += 1)
 	add_child(enemy)
+
+
+## A random point `spawn_distance` from the player that isn't inside an obstacle,
+## or null when every try lands in one.
+func _free_spawn_position() -> Variant:
+	var query := PhysicsPointQueryParameters2D.new()
+	query.collision_mask = 8
+	for attempt in 8:
+		query.position = _player.position + Vector2.from_angle(randf() * TAU) * spawn_distance
+		if get_world_2d().direct_space_state.intersect_point(query, 1).is_empty():
+			return query.position
+	return null
 
 
 func _update_hud() -> void:
