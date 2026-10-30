@@ -2,8 +2,8 @@
 extends Node2D
 ## One 1024x1024 background chunk: the painting plus the obstacle hitboxes traced over it.
 ##
-## Open `background_chunk.tscn` and add CollisionPolygon2D children to `Obstacles` to
-## trace hitboxes. The painting shows in the editor so you can trace right on it.
+## The hitboxes are CollisionPolygon2D children of `Obstacles`, baked from the painting by
+## `scripts/tools/bake_obstacles.gd` or traced by hand in the editor over the painting.
 
 const SIZE := 1024
 
@@ -29,6 +29,4 @@ func _placeholder_image() -> Image:
 	# Thick lines on the chunk edges, so you can see where one chunk ends.
 	image.fill_rect(Rect2i(0, 0, 3, SIZE), Color(0.3, 0.3, 0.36))
 	image.fill_rect(Rect2i(0, 0, SIZE, 3), Color(0.3, 0.3, 0.36))
-	# Matches the ExampleObstacle hitbox. Delete both once your painting is in.
-	image.fill_rect(Rect2i(640, 640, 128, 128), Color(0.35, 0.3, 0.3))
 	return image
