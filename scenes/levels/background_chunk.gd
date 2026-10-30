@@ -7,7 +7,7 @@ extends Node2D
 
 const SIZE := 1024
 
-@export_file("*.png") var art_path := "res://assets/art/backgrounds/test_chunk.png"
+@export_file("*.png") var art_path := "res://assets/art/backgrounds/level_1.png"
 
 @onready var _art: Sprite2D = $Art
 
@@ -29,6 +29,4 @@ func _placeholder_image() -> Image:
 	# Thick lines on the chunk edges, so you can see where one chunk ends.
 	image.fill_rect(Rect2i(0, 0, 3, SIZE), Color(0.3, 0.3, 0.36))
 	image.fill_rect(Rect2i(0, 0, SIZE, 3), Color(0.3, 0.3, 0.36))
-	# Matches the ExampleObstacle hitbox. Delete both once your painting is in.
-	image.fill_rect(Rect2i(640, 640, 128, 128), Color(0.35, 0.3, 0.3))
 	return image

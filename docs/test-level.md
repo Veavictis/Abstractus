@@ -23,7 +23,7 @@ the editor, and the game uses it instead of the placeholder. No code changes nee
 | Player | `assets/art/sprites/player.png` | 48x48 |
 | Enemy | `assets/art/sprites/enemy.png` | 48x48 |
 | Player auto-attack shot | `assets/art/sprites/player_shot.png` | 24x24, drawn facing right |
-| Background chunk | `assets/art/backgrounds/test_chunk.png` | 1024x1024, seamless |
+| Background chunk | `assets/art/backgrounds/level_1.png` | 1024x1024, seamless |
 
 - One frame: export the PNG as is.
 - Animation: File > Export Sprite Sheet, Layout **Horizontal Strip**, no padding. A strip
@@ -42,13 +42,15 @@ The background is one painting. Obstacles are hitboxes you trace over it in Godo
 `scenes/levels/background_chunk.tscn`. That scene repeats in every direction, so each
 hitbox repeats with the painting, once every 1024 px.
 
+The 18 outlined shapes in `level_1.png` are already traced as `Obstacles/Obstacle1` to
+`Obstacle18`. To change one, select it and drag its points. To add one:
+
 1. Open `scenes/levels/background_chunk.tscn`. Your painting shows in the editor.
-2. Delete `Obstacles/ExampleObstacle` (it matches the grey placeholder block only).
-3. Right-click `Obstacles` > Add Child Node > **CollisionPolygon2D**.
-4. With it selected, click around the edge of an obstacle in the painting to place points.
+2. Right-click `Obstacles` > Add Child Node > **CollisionPolygon2D**.
+3. With it selected, click around the edge of an obstacle in the painting to place points.
    Click the first point again to close the shape. One CollisionPolygon2D per obstacle.
-5. Save and press F5. The player can't walk through traced areas.
+4. Save and press F5. The player can't walk through traced areas.
 
 Tip: Debug > Visible Collision Shapes shows the hitboxes while the game runs.
-Everything not traced is walkable. Right now only the player is blocked; enemies and
-shots pass through obstacles.
+Everything not traced is walkable. The player and enemies slide along obstacles, and
+player shots disappear when they hit one.
