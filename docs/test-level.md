@@ -34,4 +34,21 @@ the editor, and the game uses it instead of the placeholder. No code changes nee
 
 To use a different file name, select the `Sprite` node in `scenes/actors/player.tscn`
 (or `enemy.tscn`, `player_shot.tscn`) and change **Art Path**. The background's path is on
-the `Background` node in `test_level.tscn`.
+the root node of `scenes/levels/background_chunk.tscn`.
+
+## Background obstacles (hitboxes)
+
+The background is one painting. Obstacles are hitboxes you trace over it in Godot, in
+`scenes/levels/background_chunk.tscn`. That scene repeats in every direction, so each
+hitbox repeats with the painting, once every 1024 px.
+
+1. Open `scenes/levels/background_chunk.tscn`. Your painting shows in the editor.
+2. Delete `Obstacles/ExampleObstacle` (it matches the grey placeholder block only).
+3. Right-click `Obstacles` > Add Child Node > **CollisionPolygon2D**.
+4. With it selected, click around the edge of an obstacle in the painting to place points.
+   Click the first point again to close the shape. One CollisionPolygon2D per obstacle.
+5. Save and press F5. The player can't walk through traced areas.
+
+Tip: Debug > Visible Collision Shapes shows the hitboxes while the game runs.
+Everything not traced is walkable. Right now only the player is blocked; enemies and
+shots pass through obstacles.

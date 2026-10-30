@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/levels/background_chunk.gd" id="1_chunk"]
+
+[node name="BackgroundChunk" type="Node2D"]
+script = ExtResource("1_chunk")
+
+[node name="Art" type="Sprite2D" parent="."]
+z_index = -100
+centered = false
+
+[node name="Obstacles" type="StaticBody2D" parent="."]
+collision_layer = 8
+collision_mask = 0
+
+[node name="ExampleObstacle" type="CollisionPolygon2D" parent="Obstacles"]
+polygon = PackedVector2Array(640, 640, 768, 640, 768, 768, 640, 768)
