@@ -19,6 +19,9 @@ func _ready() -> void:
 	else:
 		texture = ImageTexture.create_from_image(_placeholder_image())
 	_sprite.texture = PixelGlow.padded(texture, GLOW_PADDING)
+	# Each kind pulses by its own amount, so give this dot its own copy of the glow.
+	_sprite.material = _sprite.material.duplicate()
+	_sprite.material.set_shader_parameter("pulse_amount", kind.glow_pulse)
 	body_entered.connect(_on_body_entered)
 
 
