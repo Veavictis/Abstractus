@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://scenes/actors/player_shot.gd" id="1_shot"]
 [ext_resource type="Script" path="res://scripts/components/art_sprite.gd" id="2_art"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_shot"]
-radius = 6.0
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_shot"]
+points = PackedVector2Array(-10, -10, 10, 0, -10, 10)
 
 [node name="PlayerShot" type="Area2D"]
 collision_layer = 4
@@ -19,4 +19,4 @@ frame_size = Vector2i(24, 24)
 placeholder_color = Color(1, 1, 1, 1)
 
 [node name="Shape" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_shot")
+shape = SubResource("ConvexPolygonShape2D_shot")
