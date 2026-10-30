@@ -1,7 +1,7 @@
 class_name Enemy
 extends CharacterBody2D
-## Test enemy: walks straight at the player, sliding along obstacles, and dies after
-## `max_health` hits. Shots and the player's hurtbox touch its `Hitbox` area.
+## Test enemy: walks straight at the player and dies after `max_health` hits.
+## It slides along obstacles instead of walking through them.
 ## Every number here is a placeholder to tune in the Inspector.
 
 signal killed

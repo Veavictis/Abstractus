@@ -2,68 +2,67 @@
 
 [ext_resource type="Script" path="res://scenes/levels/background_chunk.gd" id="1_chunk"]
 
-[node name="BackgroundChunk" type="Node2D" unique_id=1653142968]
+[node name="BackgroundChunk" type="Node2D" unique_id=1722317446]
 script = ExtResource("1_chunk")
-art_path = "res://assets/art/backgrounds/level_1.png"
 
-[node name="Art" type="Sprite2D" parent="." unique_id=236517364]
+[node name="Art" type="Sprite2D" parent="." unique_id=169858734]
 z_index = -100
 centered = false
 
-[node name="Obstacles" type="StaticBody2D" parent="." unique_id=10001701]
+[node name="Obstacles" type="StaticBody2D" parent="." unique_id=1522189500]
 collision_layer = 8
 collision_mask = 0
 
-[node name="Obstacle1" type="CollisionPolygon2D" parent="Obstacles" unique_id=1417163134]
-polygon = PackedVector2Array(991, 13, 989, 14, 987, 14, 985, 19, 984, 19, 984, 24, 986, 26, 986, 28, 991, 31, 996, 31, 1000, 28, 1001, 28, 1002, 24, 1003, 24, 1003, 19, 1001, 17, 1001, 15, 996, 13, 996, 12, 991, 12)
+[node name="Obstacle1" type="CollisionPolygon2D" parent="Obstacles" unique_id=1423050049]
+polygon = PackedVector2Array(991, 13, 989, 14, 987, 14, 985, 19, 984, 19, 986, 26, 986, 28, 991, 31, 996, 31, 1000, 28, 1001, 28, 1002, 24, 1003, 24, 1001, 17, 1001, 15, 991, 12)
 
-[node name="Obstacle2" type="CollisionPolygon2D" parent="Obstacles" unique_id=1555032203]
-polygon = PackedVector2Array(729, 15, 725, 17, 723, 17, 720, 21, 719, 21, 717, 27, 716, 27, 716, 36, 719, 40, 719, 42, 729, 49, 738, 49, 742, 46, 744, 46, 747, 42, 748, 42, 750, 36, 751, 36, 751, 27, 748, 23, 748, 21, 744, 18, 744, 17, 738, 15, 738, 14, 729, 14)
+[node name="Obstacle2" type="CollisionPolygon2D" parent="Obstacles" unique_id=295953717]
+polygon = PackedVector2Array(729, 15, 725, 17, 723, 17, 717, 27, 716, 27, 716, 36, 719, 40, 719, 42, 729, 49, 738, 49, 747, 42, 748, 42, 750, 36, 751, 36, 751, 27, 748, 23, 748, 21, 738, 15, 738, 14, 729, 14)
 
-[node name="Obstacle3" type="CollisionPolygon2D" parent="Obstacles" unique_id=2117719801]
+[node name="Obstacle3" type="CollisionPolygon2D" parent="Obstacles" unique_id=1252537969]
 polygon = PackedVector2Array(397, 17, 397, 28, 397, 29, 640, 28, 641, 28, 640, 17, 640, 16, 397, 16)
 
-[node name="Obstacle4" type="CollisionPolygon2D" parent="Obstacles" unique_id=632850487]
+[node name="Obstacle4" type="CollisionPolygon2D" parent="Obstacles" unique_id=551490823]
 polygon = PackedVector2Array(154, 35, 153, 35, 153, 65, 135, 65, 134, 41, 63, 41, 62, 42, 62, 65, 30, 66, 29, 66, 30, 96, 62, 96, 63, 207, 134, 207, 135, 206, 135, 96, 153, 96, 154, 155, 166, 155, 167, 154, 167, 96, 179, 95, 180, 95, 180, 66, 167, 65, 167, 35, 154, 34)
 
-[node name="Obstacle5" type="CollisionPolygon2D" parent="Obstacles" unique_id=697362384]
+[node name="Obstacle5" type="CollisionPolygon2D" parent="Obstacles" unique_id=1944512871]
 polygon = PackedVector2Array(809, 37, 808, 37, 808, 72, 844, 72, 845, 72, 845, 37, 809, 36)
 
-[node name="Obstacle6" type="CollisionPolygon2D" parent="Obstacles" unique_id=2817884]
+[node name="Obstacle6" type="CollisionPolygon2D" parent="Obstacles" unique_id=2001050077]
 polygon = PackedVector2Array(410, 250, 409, 250, 409, 313, 473, 313, 474, 313, 474, 250, 410, 249)
 
-[node name="Obstacle7" type="CollisionPolygon2D" parent="Obstacles" unique_id=403852589]
+[node name="Obstacle7" type="CollisionPolygon2D" parent="Obstacles" unique_id=1592676849]
 polygon = PackedVector2Array(673, 261, 672, 261, 672, 408, 692, 408, 693, 408, 693, 261, 673, 260)
 
-[node name="Obstacle8" type="CollisionPolygon2D" parent="Obstacles" unique_id=286034710]
-polygon = PackedVector2Array(30, 361, 27, 362, 24, 362, 23, 364, 21, 364, 15, 372, 14, 372, 12, 378, 12, 387, 14, 390, 14, 393, 16, 394, 16, 396, 24, 402, 24, 403, 30, 405, 39, 405, 42, 403, 45, 403, 46, 401, 48, 401, 52, 396, 53, 396, 56, 387, 57, 387, 57, 378, 55, 375, 55, 372, 53, 371, 53, 369, 45, 363, 45, 362, 39, 361, 39, 360, 30, 360)
+[node name="Obstacle8" type="CollisionPolygon2D" parent="Obstacles" unique_id=1895557192]
+polygon = PackedVector2Array(30, 361, 23, 364, 21, 364, 15, 372, 14, 372, 12, 378, 12, 387, 16, 394, 16, 396, 24, 402, 24, 403, 30, 405, 39, 405, 46, 401, 48, 401, 52, 396, 53, 396, 56, 387, 57, 387, 57, 378, 53, 371, 53, 369, 45, 363, 45, 362, 30, 360)
 
-[node name="Obstacle9" type="CollisionPolygon2D" parent="Obstacles" unique_id=2079839728]
-polygon = PackedVector2Array(906, 428, 902, 430, 900, 430, 893, 440, 893, 449, 900, 459, 902, 459, 902, 470, 905, 476, 905, 478, 908, 480, 908, 482, 915, 487, 915, 488, 923, 491, 926, 491, 926, 494, 930, 499, 930, 501, 935, 504, 935, 505, 942, 507, 942, 508, 950, 508, 955, 505, 957, 505, 958, 503, 960, 503, 963, 498, 964, 498, 966, 491, 967, 491, 966, 483, 966, 480, 962, 475, 962, 473, 957, 469, 955, 469, 955, 459, 952, 453, 952, 451, 949, 449, 949, 447, 942, 442, 942, 441, 934, 438, 926, 438, 925, 436, 925, 434, 921, 431, 921, 430, 915, 428, 915, 427, 906, 427)
+[node name="Obstacle9" type="CollisionPolygon2D" parent="Obstacles" unique_id=857135984]
+polygon = PackedVector2Array(906, 428, 902, 430, 900, 430, 893, 440, 893, 449, 900, 459, 902, 459, 902, 470, 905, 476, 905, 478, 908, 480, 908, 482, 915, 487, 915, 488, 923, 491, 926, 491, 930, 499, 930, 501, 942, 507, 942, 508, 950, 508, 958, 503, 960, 503, 966, 491, 967, 491, 966, 483, 966, 480, 957, 469, 955, 469, 955, 459, 952, 453, 952, 451, 949, 449, 949, 447, 942, 442, 942, 441, 934, 438, 926, 438, 925, 436, 925, 434, 921, 431, 921, 430, 915, 428, 915, 427, 906, 427)
 
-[node name="Obstacle10" type="CollisionPolygon2D" parent="Obstacles" unique_id=190341156]
-polygon = PackedVector2Array(525, 489, 522, 489, 521, 491, 519, 491, 516, 496, 515, 496, 514, 499, 514, 506, 515, 506, 515, 509, 517, 510, 517, 512, 525, 517, 532, 517, 536, 514, 538, 514, 539, 512, 540, 512, 542, 506, 543, 506, 543, 499, 542, 499, 542, 496, 540, 495, 540, 493, 535, 490, 535, 489, 525, 488)
+[node name="Obstacle10" type="CollisionPolygon2D" parent="Obstacles" unique_id=1430805805]
+polygon = PackedVector2Array(525, 489, 521, 491, 519, 491, 516, 496, 515, 496, 514, 499, 514, 506, 517, 510, 517, 512, 525, 517, 532, 517, 539, 512, 540, 512, 542, 506, 543, 506, 543, 499, 540, 495, 540, 493, 535, 490, 535, 489, 525, 488)
 
-[node name="Obstacle11" type="CollisionPolygon2D" parent="Obstacles" unique_id=240801593]
+[node name="Obstacle11" type="CollisionPolygon2D" parent="Obstacles" unique_id=1717874396]
 polygon = PackedVector2Array(265, 509, 264, 509, 264, 544, 300, 544, 301, 544, 301, 509, 265, 508)
 
-[node name="Obstacle12" type="CollisionPolygon2D" parent="Obstacles" unique_id=1052562818]
-polygon = PackedVector2Array(151, 631, 148, 631, 147, 633, 145, 633, 142, 638, 141, 638, 140, 641, 140, 648, 141, 648, 141, 651, 143, 652, 143, 654, 151, 659, 158, 659, 162, 656, 164, 656, 165, 654, 166, 654, 168, 648, 169, 648, 169, 641, 166, 637, 166, 635, 161, 632, 161, 631, 151, 630)
+[node name="Obstacle12" type="CollisionPolygon2D" parent="Obstacles" unique_id=71541350]
+polygon = PackedVector2Array(151, 631, 147, 633, 145, 633, 142, 638, 141, 638, 140, 641, 140, 648, 143, 652, 143, 654, 151, 659, 158, 659, 165, 654, 166, 654, 168, 648, 169, 648, 169, 641, 166, 637, 166, 635, 161, 632, 161, 631, 151, 630)
 
-[node name="Obstacle13" type="CollisionPolygon2D" parent="Obstacles" unique_id=450555214]
+[node name="Obstacle13" type="CollisionPolygon2D" parent="Obstacles" unique_id=2048192611]
 polygon = PackedVector2Array(813, 645, 812, 645, 812, 680, 848, 680, 849, 680, 849, 645, 813, 644)
 
-[node name="Obstacle14" type="CollisionPolygon2D" parent="Obstacles" unique_id=668369045]
-polygon = PackedVector2Array(569, 677, 565, 677, 562, 679, 559, 679, 555, 683, 553, 683, 548, 689, 547, 689, 544, 695, 543, 695, 540, 705, 540, 716, 543, 723, 543, 726, 547, 730, 547, 732, 553, 737, 553, 738, 559, 741, 559, 742, 569, 744, 569, 745, 580, 744, 584, 744, 587, 742, 590, 742, 594, 738, 596, 738, 601, 732, 602, 732, 605, 726, 606, 726, 608, 716, 609, 716, 608, 705, 608, 701, 606, 698, 606, 695, 602, 691, 602, 689, 596, 684, 596, 683, 590, 680, 590, 679, 580, 677, 580, 676, 569, 676)
+[node name="Obstacle14" type="CollisionPolygon2D" parent="Obstacles" unique_id=348898507]
+polygon = PackedVector2Array(569, 677, 562, 679, 559, 679, 555, 683, 553, 683, 544, 695, 543, 695, 540, 705, 540, 716, 543, 723, 543, 726, 547, 730, 547, 732, 559, 741, 559, 742, 569, 744, 569, 745, 580, 744, 584, 744, 594, 738, 596, 738, 601, 732, 602, 732, 605, 726, 606, 726, 608, 716, 609, 716, 608, 705, 608, 701, 602, 691, 602, 689, 590, 680, 590, 679, 580, 677, 580, 676, 569, 676)
 
-[node name="Obstacle15" type="CollisionPolygon2D" parent="Obstacles" unique_id=1897171497]
-polygon = PackedVector2Array(375, 792, 373, 793, 371, 793, 367, 799, 367, 800, 364, 801, 361, 801, 355, 807, 355, 809, 354, 808, 347, 808, 344, 810, 342, 810, 341, 812, 339, 812, 336, 818, 335, 818, 335, 821, 334, 821, 335, 828, 335, 831, 338, 834, 338, 836, 342, 838, 342, 839, 347, 841, 354, 841, 357, 839, 359, 839, 360, 837, 362, 837, 366, 831, 366, 828, 371, 826, 374, 826, 379, 820, 380, 820, 381, 817, 381, 812, 383, 811, 385, 811, 388, 805, 389, 805, 389, 799, 387, 797, 387, 795, 381, 792, 381, 791, 375, 791)
+[node name="Obstacle15" type="CollisionPolygon2D" parent="Obstacles" unique_id=2089202977]
+polygon = PackedVector2Array(375, 792, 373, 793, 371, 793, 367, 799, 367, 800, 364, 801, 361, 801, 355, 807, 355, 809, 354, 808, 347, 808, 341, 812, 339, 812, 335, 821, 334, 821, 335, 828, 335, 831, 342, 838, 342, 839, 347, 841, 354, 841, 360, 837, 362, 837, 366, 831, 366, 828, 371, 826, 374, 826, 379, 820, 380, 820, 381, 817, 381, 812, 383, 811, 385, 811, 388, 805, 389, 805, 387, 797, 387, 795, 381, 792, 381, 791, 375, 791)
 
-[node name="Obstacle16" type="CollisionPolygon2D" parent="Obstacles" unique_id=60319942]
+[node name="Obstacle16" type="CollisionPolygon2D" parent="Obstacles" unique_id=1914200995]
 polygon = PackedVector2Array(137, 845, 136, 845, 136, 904, 196, 904, 197, 904, 197, 845, 137, 844)
 
-[node name="Obstacle17" type="CollisionPolygon2D" parent="Obstacles" unique_id=1038252998]
+[node name="Obstacle17" type="CollisionPolygon2D" parent="Obstacles" unique_id=360976773]
 polygon = PackedVector2Array(373, 929, 372, 929, 372, 952, 396, 952, 397, 952, 397, 929, 373, 928)
 
-[node name="Obstacle18" type="CollisionPolygon2D" parent="Obstacles" unique_id=543214620]
+[node name="Obstacle18" type="CollisionPolygon2D" parent="Obstacles" unique_id=1519888153]
 polygon = PackedVector2Array(869, 961, 868, 961, 868, 980, 888, 980, 889, 980, 889, 961, 869, 960)

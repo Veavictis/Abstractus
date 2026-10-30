@@ -41,7 +41,7 @@ func _physics_process(delta: float) -> void:
 			_fire_cooldown = fire_interval
 
 	_hurt_cooldown -= delta
-	if _hurt_cooldown <= 0.0 and _hurtbox.has_overlapping_areas():
+	if _hurt_cooldown <= 0.0 and _hurtbox.has_overlapping_bodies():
 		_take_hit(1)
 		_hurt_cooldown = hurt_interval
 

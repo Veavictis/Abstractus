@@ -2,12 +2,12 @@
 extends Node2D
 ## One 1024x1024 background chunk: the painting plus the obstacle hitboxes traced over it.
 ##
-## Open `background_chunk.tscn` and add CollisionPolygon2D children to `Obstacles` to
-## trace hitboxes. The painting shows in the editor so you can trace right on it.
+## The hitboxes are CollisionPolygon2D children of `Obstacles`, baked from the painting by
+## `scripts/tools/bake_obstacles.gd` or traced by hand in the editor over the painting.
 
 const SIZE := 1024
 
-@export_file("*.png") var art_path := "res://assets/art/backgrounds/level_1.png"
+@export_file("*.png") var art_path := "res://assets/art/backgrounds/test_chunk.png"
 
 @onready var _art: Sprite2D = $Art
 

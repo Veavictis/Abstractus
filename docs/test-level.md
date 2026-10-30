@@ -23,7 +23,7 @@ the editor, and the game uses it instead of the placeholder. No code changes nee
 | Player | `assets/art/sprites/player.png` | 48x48 |
 | Enemy | `assets/art/sprites/enemy.png` | 48x48 |
 | Player auto-attack shot | `assets/art/sprites/player_shot.png` | 24x24, drawn facing right |
-| Background chunk | `assets/art/backgrounds/level_1.png` | 1024x1024, seamless |
+| Background chunk | `assets/art/backgrounds/test_chunk.png` | 1024x1024, seamless |
 
 - One frame: export the PNG as is.
 - Animation: File > Export Sprite Sheet, Layout **Horizontal Strip**, no padding. A strip
@@ -38,19 +38,24 @@ the root node of `scenes/levels/background_chunk.tscn`.
 
 ## Background obstacles (hitboxes)
 
-The background is one painting. Obstacles are hitboxes you trace over it in Godot, in
-`scenes/levels/background_chunk.tscn`. That scene repeats in every direction, so each
-hitbox repeats with the painting, once every 1024 px.
+The background is one painting. Obstacles are hitboxes (CollisionPolygon2D nodes) under
+`Obstacles` in `scenes/levels/background_chunk.tscn`. That scene repeats in every
+direction, so each hitbox repeats with the painting, once every 1024 px.
 
-The 18 outlined shapes in `level_1.png` are already traced as `Obstacles/Obstacle1` to
-`Obstacle18`. To change one, select it and drag its points. To add one:
+**Automatic (black floor, outlined shapes):** every shape you can't reach from the
+painting's edges over black floor becomes a hitbox, inside included (so the donut's hole
+is solid). Shapes that touch or overlap become one hitbox. After changing the painting,
+close the scene in Godot and run this from the project folder:
 
-1. Open `scenes/levels/background_chunk.tscn`. Your painting shows in the editor.
-2. Right-click `Obstacles` > Add Child Node > **CollisionPolygon2D**.
-3. With it selected, click around the edge of an obstacle in the painting to place points.
-   Click the first point again to close the shape. One CollisionPolygon2D per obstacle.
-4. Save and press F5. The player can't walk through traced areas.
+    "C:\Users\User\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --headless --path . -s res://scripts/tools/bake_obstacles.gd
+
+It replaces every hitbox in `Obstacles`, so hand edits there are lost on the next bake.
+
+**By hand:** open `background_chunk.tscn`, right-click `Obstacles` > Add Child Node >
+**CollisionPolygon2D**, and click around an obstacle in the painting to place points.
+Click the first point again to close the shape. Select a baked hitbox to move its points.
 
 Tip: Debug > Visible Collision Shapes shows the hitboxes while the game runs.
 Everything not traced is walkable. The player and enemies slide along obstacles, and
-player shots disappear when they hit one.
+shots disappear when they hit one. Enemies never spawn inside an obstacle. Enemies walk
+straight at the player, so one can get stuck behind a wide obstacle (no pathfinding yet).

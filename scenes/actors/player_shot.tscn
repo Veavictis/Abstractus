@@ -8,7 +8,7 @@ radius = 6.0
 
 [node name="PlayerShot" type="Area2D"]
 collision_layer = 4
-collision_mask = 10
+collision_mask = 2
 monitorable = false
 script = ExtResource("1_shot")
 
