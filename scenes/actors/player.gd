@@ -1,6 +1,6 @@
 class_name Player
 extends CharacterBody2D
-## Test player: moves, auto-fires at the nearest enemy, loses health on contact.
+## Test player: moves, auto-fires toward the mouse cursor, loses health on contact.
 ## Every number here is a placeholder to tune in the Inspector.
 
 signal health_changed(health: int)
@@ -35,10 +35,8 @@ func _physics_process(delta: float) -> void:
 
 	_fire_cooldown -= delta
 	if _fire_cooldown <= 0.0:
-		var target := _nearest_enemy()
-		if target:
-			_fire_at(target.global_position)
-			_fire_cooldown = fire_interval
+		_fire_at(get_global_mouse_position())
+		_fire_cooldown = fire_interval
 
 	_hurt_cooldown -= delta
 	if _hurt_cooldown <= 0.0 and _hurtbox.has_overlapping_bodies():
@@ -46,21 +44,13 @@ func _physics_process(delta: float) -> void:
 		_hurt_cooldown = hurt_interval
 
 
-func _nearest_enemy() -> Node2D:
-	var nearest: Node2D = null
-	var best := INF
-	for enemy: Node2D in get_tree().get_nodes_in_group("enemies"):
-		var distance := global_position.distance_squared_to(enemy.global_position)
-		if distance < best:
-			best = distance
-			nearest = enemy
-	return nearest
-
-
 func _fire_at(target: Vector2) -> void:
+	var direction := global_position.direction_to(target)
+	if direction == Vector2.ZERO:
+		direction = Vector2.LEFT if _sprite.flip_h else Vector2.RIGHT
 	var shot: PlayerShot = SHOT_SCENE.instantiate()
 	shot.global_position = global_position
-	shot.direction = global_position.direction_to(target)
+	shot.direction = direction
 	get_parent().add_child(shot)
 
 

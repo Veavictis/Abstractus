@@ -11,7 +11,7 @@ node in the Inspector, to tune or replace.
 
 - Move: WASD, arrow keys, or the left stick / D-pad on a gamepad
 - Restart: R, or the Back / Select button
-- The player fires automatically at the nearest enemy. At 0 HP the level restarts.
+- Aim: the player fires automatically toward the mouse cursor. At 0 HP the level restarts.
 
 ## Dropping in your art
 
@@ -22,7 +22,7 @@ the editor, and the game uses it instead of the placeholder. No code changes nee
 | --- | --- | --- |
 | Player | `assets/art/sprites/player.png` | 48x48 |
 | Enemy | `assets/art/sprites/enemy.png` | 48x48 |
-| Player auto-attack shot | `assets/art/sprites/player_shot.png` | 24x24, drawn facing right |
+| Player auto-attack shot | `assets/art/sprites/player_shot.png` | 24x24, drawn facing right (one image; the game rotates it to any direction) |
 | Background chunk | `assets/art/backgrounds/test_chunk.png` | 1024x1024, seamless |
 
 - One frame: export the PNG as is.
