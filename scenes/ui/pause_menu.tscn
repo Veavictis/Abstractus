@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/pause_menu.gd" id="1_pause"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+layer = 50
+script = ExtResource("1_pause")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Center"]
+custom_minimum_size = Vector2(200, 0)
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Center/Buttons"]
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="Resume" type="Button" parent="Center/Buttons"]
+unique_name_in_owner = true
+text = "Resume"
+
+[node name="QuitToTitle" type="Button" parent="Center/Buttons"]
+unique_name_in_owner = true
+text = "Quit to Title"
+
+[node name="ExitGame" type="Button" parent="Center/Buttons"]
+unique_name_in_owner = true
+text = "Exit Game"

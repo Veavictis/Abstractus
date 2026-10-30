@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scenes/actors/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" path="res://scripts/components/art_sprite.gd" id="2_art"]
+[ext_resource type="Resource" path="res://resources/drops/point_white.tres" id="3_white"]
+[ext_resource type="Resource" path="res://resources/drops/point_green.tres" id="4_green"]
+[ext_resource type="Resource" path="res://resources/drops/point_purple.tres" id="5_purple"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_enemy"]
+radius = 16.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 8
+motion_mode = 1
+script = ExtResource("1_enemy")
+drop_table = [ExtResource("3_white"), ExtResource("4_green"), ExtResource("5_purple")]
+
+[node name="Sprite" type="Sprite2D" parent="."]
+script = ExtResource("2_art")
+art_path = "res://assets/art/sprites/enemy.png"
+placeholder_color = Color(0.45, 0.45, 0.45, 1)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_enemy")

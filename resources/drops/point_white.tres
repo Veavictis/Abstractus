@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PointDropKind" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/point_drop_kind.gd" id="1_kind"]
+
+[resource]
+script = ExtResource("1_kind")
+points = 1
+weight = 75.0
+art_path = "res://assets/art/sprites/pickups/point_white.png"
+placeholder_color = Color(1, 1, 1, 1)
+glow_pulse = 0.9

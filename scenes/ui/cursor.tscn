@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/cursor.gd" id="1_cursor"]
+[ext_resource type="Shader" path="res://assets/shaders/pixel_glow.gdshader" id="2_glow"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glow"]
+shader = ExtResource("2_glow")
+shader_parameter/radius = 3
+shader_parameter/strength = 0.6
+
+[node name="Cursor" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+
+[node name="Sprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_glow")
+script = ExtResource("1_cursor")

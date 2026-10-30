@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scenes/actors/player_shot.gd" id="1_shot"]
+[ext_resource type="Script" path="res://scripts/components/art_sprite.gd" id="2_art"]
+[ext_resource type="PackedScene" path="res://scenes/effects/rainbow_trail.tscn" id="3_trail"]
+[ext_resource type="Shader" path="res://assets/shaders/pixel_glow.gdshader" id="4_glow"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glow"]
+shader = ExtResource("4_glow")
+shader_parameter/radius = 3
+shader_parameter/strength = 0.5
+shader_parameter/use_tint = true
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_shot"]
+points = PackedVector2Array(-10, -10, 10, 0, -10, 10)
+
+[node name="PlayerShot" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_shot")
+
+[node name="RainbowTrail" parent="." instance=ExtResource("3_trail")]
+amount = 24
+lifetime = 0.4
+emission_sphere_radius = 3.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_glow")
+script = ExtResource("2_art")
+art_path = "res://assets/art/sprites/player_shot.png"
+frame_size = Vector2i(24, 24)
+placeholder_color = Color(1, 1, 1, 1)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("ConvexPolygonShape2D_shot")
