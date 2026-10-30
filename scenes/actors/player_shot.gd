@@ -2,8 +2,8 @@ class_name PlayerShot
 extends Area2D
 ## Test auto-attack shot: flies straight, hits the first enemy it touches.
 ## It disappears when it hits an obstacle.
-## The art is drawn facing right; the shot rotates to its direction. `Glow` is a turquoise
-## copy of the art behind it, and the rainbow trail fades out after the shot is gone.
+## The art is drawn facing right; the shot rotates to its direction. The sprite has a
+## turquoise pixel glow, and the rainbow trail fades out after the shot is gone.
 
 ## Collision layer 4, "obstacles".
 const OBSTACLE_MASK := 8
@@ -19,7 +19,7 @@ var direction := Vector2.RIGHT
 
 func _ready() -> void:
 	rotation = direction.angle()
-	$Glow.texture = $Sprite.texture
+	$Sprite.texture = PixelGlow.padded($Sprite.texture, 3)
 	body_entered.connect(_on_body_entered)
 	get_tree().create_timer(lifetime).timeout.connect(_destroy)
 

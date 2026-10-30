@@ -11,6 +11,7 @@ script = ExtResource("1_chunk")
 
 [node name="Art" type="Sprite2D" parent="." unique_id=169858734]
 material = SubResource("ShaderMaterial_shimmer")
+texture_repeat = 2
 z_index = -100
 centered = false
 

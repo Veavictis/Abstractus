@@ -5,6 +5,9 @@ extends Sprite2D
 ## placeholder crosshair. While the player aims with the right stick, it sits a short
 ## distance from the player in the aim direction.
 
+## Room around the art for its glow, in pixels.
+const GLOW_PADDING := 3
+
 @export_file("*.png") var art_path := "res://assets/art/ui/cursor.png"
 ## How far from the player the cursor sits while aiming with the right stick.
 @export var stick_distance := 64.0
@@ -18,7 +21,8 @@ func _ready() -> void:
 		texture = ImageTexture.create_from_image(_placeholder_image())
 	# Put the middle of the center pixel on the aim point, even for even sizes.
 	centered = false
-	offset = -((texture.get_size() / 2.0).floor() + Vector2(0.5, 0.5))
+	offset = -((texture.get_size() / 2.0).floor() + Vector2(0.5, 0.5) + Vector2.ONE * GLOW_PADDING)
+	texture = PixelGlow.padded(texture, GLOW_PADDING)
 
 
 func _process(_delta: float) -> void:
