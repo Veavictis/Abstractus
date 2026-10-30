@@ -5,6 +5,7 @@ extends CharacterBody2D
 ## Every number here is a placeholder to tune in the Inspector.
 
 signal health_changed(health: int)
+signal points_changed(points: int)
 signal died
 
 const SHOT_SCENE := preload("res://scenes/actors/player_shot.tscn")
@@ -16,6 +17,7 @@ const SHOT_SCENE := preload("res://scenes/actors/player_shot.tscn")
 @export var hurt_interval := 0.5
 
 var health := max_health
+var points := 0
 ## Unit vector the player aims and faces along.
 var aim_direction := Vector2.RIGHT
 ## True while the right stick aims; moving the mouse switches back to the cursor.
@@ -72,6 +74,11 @@ func _fire() -> void:
 	shot.global_position = global_position
 	shot.direction = aim_direction
 	get_parent().add_child(shot)
+
+
+func add_points(amount: int) -> void:
+	points += amount
+	points_changed.emit(points)
 
 
 func _take_hit(amount: int) -> void:

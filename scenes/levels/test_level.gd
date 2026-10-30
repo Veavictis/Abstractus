@@ -61,5 +61,6 @@ func _free_spawn_position() -> Variant:
 
 func _update_hud() -> void:
 	_hud.text = (
-		"HP %d   Kills %d   %d:%02d" % [_player.health, _kills, int(_time / 60), int(_time) % 60]
+		"HP %d   Points %d   Kills %d   %d:%02d"
+		% [_player.health, _player.points, _kills, int(_time / 60), int(_time) % 60]
 	)

@@ -26,6 +26,9 @@ the editor, and the game uses it instead of the placeholder. No code changes nee
 | Enemy | `assets/art/sprites/enemy.png` | 48x48 |
 | Mouse cursor | `assets/art/ui/cursor.png` | any size, its center is the aim point |
 | Player auto-attack shot | `assets/art/sprites/player_shot.png` | 24x24, drawn facing right (one image; the game rotates it to any direction) |
+| White point dot (1 pt) | `assets/art/sprites/pickups/point_white.png` | about 7x7 (odd size) |
+| Green point dot (3 pts) | `assets/art/sprites/pickups/point_green.png` | about 7x7 (odd size) |
+| Purple point dot (10 pts) | `assets/art/sprites/pickups/point_purple.png` | about 7x7 (odd size) |
 | Background chunk | `assets/art/backgrounds/test_chunk.png` | 1024x1024, seamless |
 
 - One frame: export the PNG as is.
@@ -62,3 +65,14 @@ Tip: Debug > Visible Collision Shapes shows the hitboxes while the game runs.
 Everything not traced is walkable. The player and enemies slide along obstacles, and
 shots disappear when they hit one. Enemies never spawn inside an obstacle. Enemies walk
 straight at the player, so one can get stuck behind a wide obstacle (no pathfinding yet).
+
+## Point dots
+
+Enemies drop one point dot when they die, picked from the enemy's **Drop Table** in the
+Inspector. Each dot kind is a file in `resources/drops/` with its points, drop weight
+(75 / 20 / 5), PNG path and placeholder color. To add a new kind, duplicate one of those
+files and add it to an enemy's Drop Table.
+
+Draw only the dot itself, with no glow pixels. The game adds a pulsing pixel glow in the
+dot's own colors, with 3 px of room around the art.
+

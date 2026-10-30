@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/pickups/point_drop.gd" id="1_drop"]
+[ext_resource type="Shader" path="res://assets/shaders/pixel_glow.gdshader" id="2_glow"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glow"]
+shader = ExtResource("2_glow")
+shader_parameter/radius = 3
+shader_parameter/strength = 0.7
+shader_parameter/pulse_amount = 0.4
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_drop"]
+radius = 6.0
+
+[node name="PointDrop" type="Area2D"]
+z_index = -10
+collision_layer = 16
+collision_mask = 1
+monitorable = false
+script = ExtResource("1_drop")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_glow")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_drop")
