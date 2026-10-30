@@ -22,6 +22,7 @@ the editor, and the game uses it instead of the placeholder. No code changes nee
 | --- | --- | --- |
 | Player | `assets/art/sprites/player.png` | 48x48 |
 | Enemy | `assets/art/sprites/enemy.png` | 48x48 |
+| Mouse cursor | `assets/art/ui/cursor.png` | any size, its center is the aim point |
 | Player auto-attack shot | `assets/art/sprites/player_shot.png` | 24x24, drawn facing right (one image; the game rotates it to any direction) |
 | Background chunk | `assets/art/backgrounds/test_chunk.png` | 1024x1024, seamless |
 

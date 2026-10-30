@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/cursor.gd" id="1_cursor"]
+
+[node name="Cursor" type="CanvasLayer"]
+layer = 100
+
+[node name="Sprite" type="Sprite2D" parent="."]
+script = ExtResource("1_cursor")
