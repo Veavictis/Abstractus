@@ -1,7 +1,19 @@
-# Art specs (proposal, pending the creator's choices)
+# Art specs
 
-Status: options only, 2026-10-30. Nothing here is decided. Each section lists options
-with a suggested default; the creator picks.
+Status, 2026-10-30. **Decided** by the creator:
+
+- Base resolution: **960x540**, for the freedom to put as much or as little detail as
+  wanted into level design.
+- Levels: **seamless background chunks**, no tiles.
+- All art, including existing art to import, is **pixel art**.
+
+Everything else below is still an option with a suggested default; the creator picks.
+
+**Open: sprite sizes at 960x540.** The sizes in sections 4 to 7 were suggested for a
+640x360 base. At 960x540 the same canvas looks two-thirds as big on screen. Either keep
+them (smaller sprites, more zoomed-out view, more room for crowds) or scale them by 1.5x
+(player and standard enemy 48x48, projectiles 12x12 / 24x24 / 48x48) to keep the same
+on-screen size.
 
 Tool: everything is drawn in Aseprite. Existing art will also be imported later.
 
@@ -14,41 +26,38 @@ larger. Stages are large backgrounds built from repeating tiles plus scattered p
 and some stages scroll forever by repeating. The numbers below are chosen to give that
 look in Godot, not copied from the game's files.
 
-## 1. Base resolution (decide this first; everything else follows)
+## 1. Base resolution (decided: 960x540)
 
 Pixel art is drawn small and Godot scales the whole screen up by a whole number, so
 pixels stay crisp. The base resolution is the size of the "virtual screen" you draw for.
 
-| Option | Scale to 1080p | Scale to 1440p / 4K | Steam Deck (1280x800) | Look |
-| --- | --- | --- | --- | --- |
-| **A. 640x360** (suggested) | 3x | 4x / 6x | 2x, slight extra space top and bottom | Close to the Vampire Survivors feel: sprites read clearly, lots of screen for crowds |
-| B. 480x270 | 4x | ~5.3x / 8x | ~2.7x | Chunkier, more zoomed in, fewer enemies visible |
-| C. 960x540 | 2x | ~2.7x / 4x | ~1.3x | Finer pixels, more zoomed out, sprites look small |
+Options that were considered: 640x360 (3x at 1080p) and 480x270 (4x at 1080p).
 
-Godot settings that come with this choice: viewport set to the base size, stretch mode
-`viewport` (or `canvas_items`), integer scaling, and texture filter `Nearest`.
+Set in `project.godot`: viewport 960x540, window opens at 1920x1080, stretch mode
+`viewport`, aspect `expand`, integer scaling, texture filter `Nearest`, and pixel
+snapping. At 1080p the game is scaled 2x, at 4K 4x. On Steam Deck (1280x800) integer
+scaling stays at 1x and the view expands to show more of the world; switching to
+fractional scaling there would fill the screen but make pixel sizes slightly uneven.
 
-## 2. How levels are built from an art standpoint
+## 2. How levels are built from an art standpoint (decided: painted chunks)
 
-| Option | How it works in Aseprite | How it works in Godot |
-| --- | --- | --- |
-| **A. Tileset + props** (suggested) | Draw a tileset in Aseprite's Tilemap mode (ground, paths, edges, variations). Draw props (trees, rocks, shapes) as separate sprites. | `TileMapLayer` paints the ground; props are placed as sprites with optional collision. A level can repeat forever by wrapping tiles. |
-| B. Painted chunks | Paint large seamless background images, e.g. 640x360 or 1024x1024, that tile edge to edge. Props separate. | Chunks are laid out (or repeated) as sprites behind gameplay. |
-| C. Mix | Tileset for ground, hand-painted set pieces for landmarks. | Both of the above. |
-
-Tile size options: **32x32** (suggested, matches the player size) or 16x16 (more
-detail control, more tiles to draw).
+- In Aseprite: paint large seamless background images that line up edge to edge.
+  Props (rocks, shapes, landmarks) are drawn as separate sprites.
+- In Godot: chunks are laid out, or repeated, as sprites behind gameplay; props are
+  placed on top, with collision where needed.
+- Tiles (Aseprite Tilemap mode + Godot `TileMapLayer`) were considered and declined.
 
 ## 3. Level canvas size
 
-With a tileset you don't draw a level canvas; you draw the tileset canvas and assemble
-the level in Godot. Suggested starting points:
+Levels are seamless painted chunks that line up edge to edge. Chunk canvas options
+(open):
 
-- Tileset canvas: 256x256 (an 8x8 grid of 32x32 tiles), grow as needed.
-- Level size in Godot: either infinite (repeating) or a bounded area such as 120x120
-  tiles (3840x3840 px), roughly 6x10 screens at 640x360. Size is a design choice.
-- If you choose painted chunks: 512x512 seamless chunks (may suit abstract floors
-  better than a tile grid), or 640x360 (exactly one screen).
+- 960x540: exactly one screen.
+- 1024x1024: square, easy to repeat in every direction.
+- 512x512: smaller files, repeats more visibly.
+
+Level size (open): endless (chunks repeat), or a bounded area made of N x M chunks.
+
 - Props: multiples of 16 (32x32, 32x64, 64x64).
 - Stage shapes to choose from: endless in every direction, endless in one direction
   (corridor), or a closed arena with walls.
@@ -86,11 +95,13 @@ the level in Godot. Suggested starting points:
 - Areas / auras around the player: 64x64 to 128x128 (code can grow them on level up)
 - Hit effects / sparks: 16x16 or 32x32 frames
 
-## Imported existing art
+## Imported existing art (decided: all pixel art)
 
+- It is shown with nearest filtering and, where it fits, integer scale so pixels stay
+  crisp.
 - Art for the gallery and the jigsaw mini game is shown as an image, not as a game
   sprite, so it can keep its own size. Questions to decide: a common max size or
-  aspect ratio for gallery display, and whether pixel art is shown at integer scale.
+  aspect ratio for gallery display.
 - Existing art that becomes in-game sprites will need to fit the sizes above.
 
 ## Export conventions (suggested)
