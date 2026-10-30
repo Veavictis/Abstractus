@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scenes/actors/player_shot.gd" id="1_shot"]
+[ext_resource type="Script" path="res://scripts/components/art_sprite.gd" id="2_art"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shot"]
+radius = 6.0
+
+[node name="PlayerShot" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_shot")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+script = ExtResource("2_art")
+art_path = "res://assets/art/sprites/player_shot.png"
+frame_size = Vector2i(24, 24)
+placeholder_color = Color(1, 1, 1, 1)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_shot")
