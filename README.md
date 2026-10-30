@@ -1,6 +1,6 @@
 # Abstractus
 
-A 2D isometric pixel-art game in Godot 4.7, headed for Steam (Windows and Steam Deck).
+A Godot 4.7 game headed for Steam.
 
 ## Getting started
 
@@ -26,5 +26,4 @@ A 2D isometric pixel-art game in Godot 4.7, headed for Steam (Windows and Steam 
 
 Naming: `snake_case` for files and folders, `PascalCase` for node names and `class_name`.
 
-See [docs/git-workflow.md](docs/git-workflow.md) for branching, commits, and releases, and
-[docs/art-guidelines.md](docs/art-guidelines.md) for pixel scale, Aseprite, and audio formats.
+See [docs/git-workflow.md](docs/git-workflow.md) for branching, commits, and releases.
