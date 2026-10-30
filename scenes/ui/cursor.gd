@@ -1,6 +1,7 @@
 extends Sprite2D
 ## In-game mouse cursor. Drawn in the game's pixel space, so it scales with the art.
-## Uses the PNG at `art_path` if it exists (its center is the aim point), otherwise a
+## Uses the PNG at `art_path` if it exists (its center pixel is the aim point; for an even
+## size, the pixel just below and right of the middle), otherwise a
 ## placeholder crosshair. While the player aims with the right stick, it sits a short
 ## distance from the player in the aim direction.
 
@@ -15,6 +16,9 @@ func _ready() -> void:
 		texture = load(art_path)
 	else:
 		texture = ImageTexture.create_from_image(_placeholder_image())
+	# Put the middle of the center pixel on the aim point, even for even sizes.
+	centered = false
+	offset = -((texture.get_size() / 2.0).floor() + Vector2(0.5, 0.5))
 
 
 func _process(_delta: float) -> void:
