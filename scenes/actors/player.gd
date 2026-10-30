@@ -1,6 +1,7 @@
 class_name Player
 extends CharacterBody2D
-## Test player: moves, auto-fires toward the mouse cursor, loses health on contact.
+## Test player: moves, auto-fires toward the aim direction (mouse cursor, or the right stick
+## on a gamepad), faces where it aims, and loses health on contact.
 ## Every number here is a placeholder to tune in the Inspector.
 
 signal health_changed(health: int)
@@ -15,6 +16,10 @@ const SHOT_SCENE := preload("res://scenes/actors/player_shot.tscn")
 @export var hurt_interval := 0.5
 
 var health := max_health
+## Unit vector the player aims and faces along.
+var aim_direction := Vector2.RIGHT
+## True while the right stick aims; moving the mouse switches back to the cursor.
+var aiming_with_stick := false
 var _fire_cooldown := 0.0
 var _hurt_cooldown := 0.0
 
@@ -30,12 +35,14 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = direction * speed
 	move_and_slide()
-	if direction.x != 0.0:
-		_sprite.flip_h = direction.x < 0.0
+
+	_update_aim()
+	if aim_direction.x != 0.0:
+		_sprite.flip_h = aim_direction.x < 0.0
 
 	_fire_cooldown -= delta
 	if _fire_cooldown <= 0.0:
-		_fire_at(get_global_mouse_position())
+		_fire()
 		_fire_cooldown = fire_interval
 
 	_hurt_cooldown -= delta
@@ -44,13 +51,26 @@ func _physics_process(delta: float) -> void:
 		_hurt_cooldown = hurt_interval
 
 
-func _fire_at(target: Vector2) -> void:
-	var direction := global_position.direction_to(target)
-	if direction == Vector2.ZERO:
-		direction = Vector2.LEFT if _sprite.flip_h else Vector2.RIGHT
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		aiming_with_stick = false
+
+
+func _update_aim() -> void:
+	var stick := Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
+	if stick != Vector2.ZERO:
+		aiming_with_stick = true
+		aim_direction = stick.normalized()
+	elif not aiming_with_stick:
+		var to_mouse := global_position.direction_to(get_global_mouse_position())
+		if to_mouse != Vector2.ZERO:
+			aim_direction = to_mouse
+
+
+func _fire() -> void:
 	var shot: PlayerShot = SHOT_SCENE.instantiate()
 	shot.global_position = global_position
-	shot.direction = direction
+	shot.direction = aim_direction
 	get_parent().add_child(shot)
 
 

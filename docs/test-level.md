@@ -11,7 +11,9 @@ node in the Inspector, to tune or replace.
 
 - Move: WASD, arrow keys, or the left stick / D-pad on a gamepad
 - Restart: R, or the Back / Select button
-- Aim: the player fires automatically toward the mouse cursor. At 0 HP the level restarts.
+- Aim: the mouse, or the right stick on a gamepad. The player fires automatically toward
+  the aim and faces it. Moving the mouse switches back from the stick. At 0 HP the level
+  restarts.
 
 ## Dropping in your art
 
