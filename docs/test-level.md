@@ -50,5 +50,6 @@ hitbox repeats with the painting, once every 1024 px.
 5. Save and press F5. The player can't walk through traced areas.
 
 Tip: Debug > Visible Collision Shapes shows the hitboxes while the game runs.
-Everything not traced is walkable. Right now only the player is blocked; enemies and
-shots pass through obstacles.
+Everything not traced is walkable. The player and enemies slide along obstacles, and
+shots disappear when they hit one. Enemies never spawn inside an obstacle. Enemies walk
+straight at the player, so one can get stuck behind a wide obstacle (no pathfinding yet).

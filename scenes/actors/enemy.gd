@@ -1,6 +1,7 @@
 class_name Enemy
-extends Area2D
+extends CharacterBody2D
 ## Test enemy: walks straight at the player and dies after `max_health` hits.
+## It slides along obstacles instead of walking through them.
 ## Every number here is a placeholder to tune in the Inspector.
 
 signal killed
@@ -23,7 +24,8 @@ func _physics_process(delta: float) -> void:
 	if not is_instance_valid(target):
 		return
 	var direction := global_position.direction_to(target.global_position)
-	position += direction * speed * delta
+	velocity = direction * speed
+	move_and_slide()
 	if direction.x != 0.0:
 		_sprite.flip_h = direction.x < 0.0
 
