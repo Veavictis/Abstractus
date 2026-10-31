@@ -27,6 +27,7 @@ var _target := Vector2.ZERO
 func _ready() -> void:
 	_home = position
 	visible = false
+	add_to_group("title_dancers")
 	set_process(false)
 
 

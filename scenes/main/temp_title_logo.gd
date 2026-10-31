@@ -41,50 +41,60 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	# A "\n" in `text` starts a new line; each line is centered on its own.
+	var lines := text.split("\n")
 	var font := _font()
-	var widths := _letter_widths()
-	var total := text_width()
-	# Center the word in this control. The baseline sits so the capitals are vertically centered.
-	var x := (size.x - total) / 2.0
-	var baseline := (size.y + font.get_ascent(font_size) - font.get_descent(font_size)) / 2.0
-
-	for i in text.length():
-		var letter := text[i]
-		var color := letter_colors[i % letter_colors.size()]
-		var pos := Vector2(x, baseline)
-		# 0 to 1 and back, offset per letter.
-		var pulse := 0.5 + 0.5 * sin(TAU * (_time * pulse_speed) - i * pulse_wave)
-
-		# Glow: the letter's outline drawn several times, wide and faint to thin and strong.
-		var layers := 5
-		for layer in layers:
-			var t := float(layer) / (layers - 1)
-			var outline := int(lerpf(glow_size * 2.0, 2.0, t))
-			var glow := color
-			glow.a = minf(lerpf(0.1, 0.5, t) * (0.7 + 0.3 * pulse) * brightness, 1.0)
-			draw_string_outline(font, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline, glow)
-		# Bright edge, then the pulsing inside.
-		draw_string_outline(font, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, 2, color.lightened(0.5))
-		var inside := color.darkened(0.55).lerp(color.lightened(0.15), pulse)
-		inside = Color(inside.r * brightness, inside.g * brightness, inside.b * brightness)
-		draw_string(font, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, inside)
-
-		x += widths[i] + letter_spacing
+	var line_height := font.get_height(font_size)
+	# The baseline of the first line sits so the whole block is vertically centered.
+	var baseline := (size.y - line_height * lines.size()) / 2.0 + font.get_ascent(font_size)
+	var i := 0
+	for line in lines:
+		var x := (size.x - _line_width(line)) / 2.0
+		for letter in line:
+			_draw_letter(font, letter, Vector2(x, baseline), i)
+			x += _letter_width(letter) + letter_spacing
+			i += 1
+		baseline += line_height
 
 
-## Width of the whole word, letter spacing included.
+## Draws letter number `i` (counted across all lines, for its color and pulse).
+func _draw_letter(font: Font, letter: String, pos: Vector2, i: int) -> void:
+	var color := letter_colors[i % letter_colors.size()]
+	# 0 to 1 and back, offset per letter.
+	var pulse := 0.5 + 0.5 * sin(TAU * (_time * pulse_speed) - i * pulse_wave)
+
+	# Glow: the letter's outline drawn several times, wide and faint to thin and strong.
+	var layers := 5
+	for layer in layers:
+		var t := float(layer) / (layers - 1)
+		var outline := int(lerpf(glow_size * 2.0, 2.0, t))
+		var glow := color
+		glow.a = minf(lerpf(0.1, 0.5, t) * (0.7 + 0.3 * pulse) * brightness, 1.0)
+		draw_string_outline(font, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline, glow)
+	# Bright edge, then the pulsing inside.
+	draw_string_outline(font, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, 2, color.lightened(0.5))
+	var inside := color.darkened(0.55).lerp(color.lightened(0.15), pulse)
+	inside = Color(inside.r * brightness, inside.g * brightness, inside.b * brightness)
+	draw_string(font, pos, letter, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, inside)
+
+
+## Width of the widest line, letter spacing included.
 func text_width() -> float:
+	var widest := 0.0
+	for line in text.split("\n"):
+		widest = maxf(widest, _line_width(line))
+	return widest
+
+
+func _line_width(line: String) -> float:
 	var total := 0.0
-	for w in _letter_widths():
-		total += w
-	return total + letter_spacing * maxf(text.length() - 1, 0)
+	for letter in line:
+		total += _letter_width(letter)
+	return total + letter_spacing * maxf(line.length() - 1, 0)
 
 
-func _letter_widths() -> Array[float]:
-	var widths: Array[float] = []
-	for letter in text:
-		widths.append(_font().get_string_size(letter, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x)
-	return widths
+func _letter_width(letter: String) -> float:
+	return _font().get_string_size(letter, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 
 
 func _font() -> Font:
