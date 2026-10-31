@@ -11,3 +11,6 @@ It is someone else's copyrighted music and must not ship.
 
 To swap a track, select the level's `Music` node and drag the new file onto its `Stream`
 (for an `.ogg`, turn on Loop in its Import tab). Then delete the TEMP file and its row here.
+
+TEMP audio files are in `.gitignore`, so they stay on the developer's PC and are never pushed to GitHub.
+Only their `.import` settings (such as Loop) are committed.

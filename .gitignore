@@ -30,3 +30,7 @@ desktop.ini
 .idea/
 *.swp
 *~
+
+# TEMP stand-in music (copyrighted, local only; see assets/audio/music/README.md)
+assets/audio/music/TEMP_*
+!assets/audio/music/TEMP_*.import
