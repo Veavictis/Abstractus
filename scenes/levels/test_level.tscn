@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scenes/levels/test_level.gd" id="1_level"]
 [ext_resource type="Script" path="res://scripts/components/chunk_grid.gd" id="2_bg"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/cursor.tscn" id="4_cursor"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="5_pause"]
 [ext_resource type="AudioStream" uid="uid://bapa5rpuv0ibk" path="res://assets/audio/music/TEMP_hero_remix.ogg" id="6_music"]
+[ext_resource type="Script" path="res://scripts/components/beat_pulse.gd" id="7_beat"]
 
 
 [node name="TestLevel" type="Node2D"]
@@ -34,3 +35,6 @@ stream = ExtResource("6_music")
 process_mode = 3
 autoplay = true
 bus = &"Music"
+
+[node name="BeatPulse" type="Node" parent="."]
+script = ExtResource("7_beat")

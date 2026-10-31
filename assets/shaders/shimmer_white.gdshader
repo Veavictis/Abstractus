@@ -22,6 +22,15 @@ uniform float shimmer_bands = 6.0;
 // Per-pixel twinkle on the outline itself.
 uniform float twinkle_amount : hint_range(0.0, 1.0) = 0.35;
 
+// Set every frame by BeatPulse (scripts/components/beat_pulse.gd): 1.0 on a beat of the
+// music, fading to 0, and the color picked for that beat. Declared in project.godot.
+global uniform float beat_pulse;
+global uniform vec4 beat_color;
+// A pixel counts as black when its brightest channel is at most this.
+uniform float black_threshold : hint_range(0.0, 1.0) = 0.12;
+// How strongly the black parts take on the beat color at the peak of a beat.
+uniform float beat_strength : hint_range(0.0, 1.0) = 0.5;
+
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
 }
@@ -37,6 +46,11 @@ void fragment() {
 	float wave = 0.5 + 0.5 * sin(TIME * shimmer_speed - phase);
 	float shimmer = 1.0 - shimmer_amount + shimmer_amount * wave;
 	float pulse = 1.0 - pulse_amount * (0.5 + 0.5 * cos(TIME * TAU * pulse_rate));
+
+	// The black parts flash the beat color. Near-black blends in softly so edges stay smooth.
+	float brightest = max(color.r, max(color.g, color.b));
+	float black = 1.0 - smoothstep(black_threshold, black_threshold + 0.05, brightest);
+	color.rgb = mix(color.rgb, beat_color.rgb, black * beat_pulse * beat_strength);
 
 	if (is_white(color)) {
 		float twinkle = 0.5 + 0.5 * sin(TIME * 5.0 + hash(pixel) * TAU);

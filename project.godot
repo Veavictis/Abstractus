@@ -105,6 +105,17 @@ pause={
 2d_physics/layer_4="obstacles"
 2d_physics/layer_5="pickups"
 
+[shader_globals]
+
+beat_pulse={
+"type": "float",
+"value": 0.0
+}
+beat_color={
+"type": "color",
+"value": Color(0, 0, 0, 1)
+}
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
