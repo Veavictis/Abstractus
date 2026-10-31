@@ -64,8 +64,13 @@ Click the first point again to close the shape. Select a baked hitbox to move it
 
 Tip: Debug > Visible Collision Shapes shows the hitboxes while the game runs.
 Everything not traced is walkable. The player and enemies slide along obstacles, and
-shots disappear when they hit one. Enemies never spawn inside an obstacle. Enemies walk
-straight at the player, so one can get stuck behind a wide obstacle (no pathfinding yet).
+shots disappear when they hit one. Enemies never spawn inside an obstacle.
+
+Enemies path around obstacles. When the game starts, the chunk builds a navigation mesh
+(the walkable floor, kept `Path Clearance` px away from every hitbox) from these same
+hitboxes, so there's nothing to re-bake after editing them. Each enemy asks for a new path
+to the player every `Repath Interval` seconds (on the enemy's root node) through its `Agent`
+(NavigationAgent2D) child. Debug > Visible Navigation shows the mesh while the game runs.
 
 ## Point dots
 
