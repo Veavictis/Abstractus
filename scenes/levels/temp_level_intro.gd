@@ -50,6 +50,11 @@ func _run() -> void:
 	await tree.physics_frame
 	await tree.physics_frame
 	tree.paused = true
+	# The player auto-fires, so those two frames left a shot sitting on it. Clear it away;
+	# the next one comes once the game starts.
+	for node in tree.current_scene.get_children():
+		if node is PlayerShot:
+			node.free()
 	# Fade the level's music up with the picture. Volume is in decibels, so fade a 0-1 amount instead.
 	_music = tree.current_scene.get_node_or_null("Music") as AudioStreamPlayer
 	_set_music_level(0.0)

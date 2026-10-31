@@ -45,6 +45,13 @@ func _play() -> void:
 		if dancer.visible:
 			var burst: PixelBurst = BURST_SCENE.instantiate()
 			burst.position = dancer.position
+			# Bigger than an in-game death: lasts 3x longer and flies 3x further
+			# (3x the speed and 3x the slowing down covers 3x the distance).
+			burst.lifetime *= 3.0
+			burst.initial_velocity_min *= 3.0
+			burst.initial_velocity_max *= 3.0
+			burst.damping_min *= 3.0
+			burst.damping_max *= 3.0
 			add_child(burst)
 			burst.burst_from(dancer.get_node("Sprite").texture)
 		dancer.queue_free()
