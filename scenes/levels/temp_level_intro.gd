@@ -12,7 +12,7 @@ const FADE_TIME := 5.0
 const LINE_ONE := "Time to paint\nthis canvas..."
 const LINE_TWO := "WITH RAINBOW\nBLOOD"
 ## Seconds "Time to paint" shows before the smash, and "RAINBOW BLOOD" before it explodes.
-const LINE_ONE_HOLD := 2.5
+const LINE_ONE_HOLD := 3.0
 const LINE_TWO_HOLD := 1.5
 ## How long the smash takes to land, and how big the words start.
 const SMASH_TIME := 0.18
@@ -23,6 +23,19 @@ const SHAKE_TIME := 1.5
 ## Every this many pixels of the words becomes one particle.
 const PIXEL_STEP := 3
 
+## The developer's voice lines: one when "Time to paint" appears, one as the smash flies in.
+const PAINT_VOICE := preload("res://assets/audio/voice/Paint_This_Canvas_Voice.ogg")
+const BLOOD_VOICE := preload("res://assets/audio/voice/With_Rainbow_Blood_Voice.ogg")
+## Copies of "With Rainbow Blood" played together: [delay in seconds, pitch, volume in dB].
+## The extra copies start a moment late and a little lower, so the line sounds bigger.
+const BLOOD_LAYERS := [[0.0, 1.0, 0.0], [0.03, 0.94, -4.0], [0.06, 0.88, -6.0]]
+const VOICE_BUS := &"Voice"
+## Echo delay in milliseconds, how long the echo rings after the voice ends, and bass boost.
+const VOICE_ECHO_MS := 220.0
+const VOICE_ECHO_TAIL := 0.6
+const VOICE_BASS_DB := 6.0
+
+var _voices_playing := 0
 var _black: ColorRect
 var _music: AudioStreamPlayer
 
@@ -65,9 +78,13 @@ func _run() -> void:
 	_black.visible = false
 
 	var line_one := _make_words(LINE_ONE)
+	_say(PAINT_VOICE, 0.0, 1.0, 0.0)
 	await _wait(LINE_ONE_HOLD)
 
-	# The smash: big and see-through, slamming down to normal size.
+	# The smash: big and see-through, slamming down to normal size. The voice is layered
+	# on itself (see BLOOD_LAYERS) so it hits harder.
+	for layer_settings in BLOOD_LAYERS:
+		_say(BLOOD_VOICE, layer_settings[0], layer_settings[1], layer_settings[2])
 	var line_two := _make_words(LINE_TWO)
 	line_two.pivot_offset = get_viewport().get_visible_rect().size / 2.0
 	line_two.scale = Vector2.ONE * SMASH_START_SCALE
@@ -84,7 +101,56 @@ func _run() -> void:
 	tree.paused = false
 	set_process_input(false)
 	await _wait(2.0)
+	# Don't cut off a voice (or its echo) that's still going.
+	while _voices_playing > 0:
+		await _wait(0.25)
+	await _wait(VOICE_ECHO_TAIL)
 	queue_free()
+
+
+## Plays `stream` on the Voice bus after `delay` seconds, at `pitch` and `volume_db`.
+func _say(stream: AudioStream, delay: float, pitch: float, volume_db: float) -> void:
+	var player := AudioStreamPlayer.new()
+	player.stream = stream
+	player.bus = _voice_bus()
+	player.pitch_scale = pitch
+	player.volume_db = volume_db
+	add_child(player)
+	_voices_playing += 1
+	if delay > 0.0:
+		await _wait(delay)
+	player.play()
+	await player.finished
+	_voices_playing -= 1
+	player.queue_free()
+
+
+## The Voice bus: echo and a little bass on the voice lines. It goes straight to Master, so the
+## music volume slider doesn't turn it down. Made here in code (once per run of the game)
+## instead of in default_bus_layout.tres, so it's easy to find while this intro is temporary.
+func _voice_bus() -> StringName:
+	if AudioServer.get_bus_index(VOICE_BUS) != -1:
+		return VOICE_BUS
+	AudioServer.add_bus()
+	var bus := AudioServer.bus_count - 1
+	AudioServer.set_bus_name(bus, VOICE_BUS)
+	AudioServer.set_bus_send(bus, &"Master")
+	# A little bass: lift the two lowest bands of a 6-band EQ.
+	var eq := AudioEffectEQ6.new()
+	eq.set_band_gain_db(0, VOICE_BASS_DB)
+	eq.set_band_gain_db(1, VOICE_BASS_DB * 0.6)
+	AudioServer.add_bus_effect(bus, eq)
+	# Echo: two repeats, each quieter, without feedback so it dies out cleanly.
+	var echo := AudioEffectDelay.new()
+	echo.tap1_active = true
+	echo.tap1_delay_ms = VOICE_ECHO_MS
+	echo.tap1_level_db = -8.0
+	echo.tap2_active = true
+	echo.tap2_delay_ms = VOICE_ECHO_MS * 2.0
+	echo.tap2_level_db = -14.0
+	echo.feedback_active = false
+	AudioServer.add_bus_effect(bus, echo)
+	return VOICE_BUS
 
 
 func _set_music_level(amount: float) -> void:
