@@ -27,3 +27,8 @@ text = "HP 10   Kills 0   0:00"
 [node name="Cursor" parent="." instance=ExtResource("4_cursor")]
 
 [node name="PauseMenu" parent="." instance=ExtResource("5_pause")]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+autoplay = true
+bus = &"Music"

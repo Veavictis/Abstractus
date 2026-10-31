@@ -12,6 +12,9 @@ func _ready() -> void:
 	%Resume.pressed.connect(_close)
 	%QuitToTitle.pressed.connect(_quit_to_title)
 	%ExitGame.pressed.connect(get_tree().quit)
+	# Left/right (or the d-pad) moves the slider once it has focus.
+	%MusicVolume.value = Game.music_volume
+	%MusicVolume.value_changed.connect(Game.set_music_volume)
 
 
 func _unhandled_input(event: InputEvent) -> void:
