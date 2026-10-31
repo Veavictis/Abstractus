@@ -10,7 +10,12 @@ const GAME_SCENE := "res://scenes/levels/test_level.tscn"
 ## The screen fades up from black for this long, and nothing can be clicked or pressed until it ends.
 const FADE_TIME := 5.0
 
+## After the first two dancers, two more fly in every DANCER_INTERVAL seconds, up to MAX_DANCERS.
+const DANCER_INTERVAL := 4.0
+const MAX_DANCERS := 20
+
 var _fading := true
+var _dancers := 0
 
 
 func _ready() -> void:
@@ -42,6 +47,26 @@ func _on_fade_finished() -> void:
 	%Play.grab_focus()
 	%DancerLeft.enter()
 	%DancerRight.enter(0.3)
+	_dancers = 2
+	var timer := Timer.new()
+	timer.wait_time = DANCER_INTERVAL
+	timer.timeout.connect(_add_dancers.bind(timer))
+	add_child(timer)
+	timer.start()
+
+
+## Two more dancers fly up at random spots along the bottom, until there are MAX_DANCERS.
+func _add_dancers(timer: Timer) -> void:
+	var screen := get_viewport_rect().size
+	for i in 2:
+		var dancer: Node2D = %DancerLeft.duplicate()
+		dancer.position = Vector2(randf_range(60.0, screen.x - 60.0), randf_range(screen.y * 0.4, screen.y - 60.0))
+		# Next to the first two, so it stays behind the logo and buttons.
+		%DancerRight.add_sibling(dancer)
+		dancer.enter(i * 0.3)
+	_dancers += 2
+	if _dancers >= MAX_DANCERS:
+		timer.queue_free()
 
 
 func _unhandled_input(event: InputEvent) -> void:
