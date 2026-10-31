@@ -28,7 +28,8 @@ const PAINT_VOICE := preload("res://assets/audio/voice/Paint_This_Canvas_Voice.o
 const BLOOD_VOICE := preload("res://assets/audio/voice/With_Rainbow_Blood_Voice.ogg")
 ## Copies of "With Rainbow Blood" played together: [delay in seconds, pitch, volume in dB].
 ## The extra copies start a moment late and a little lower, so the line sounds bigger.
-const BLOOD_LAYERS := [[0.0, 1.0, 0.0], [0.03, 0.94, -4.0], [0.06, 0.88, -6.0]]
+## All three are +3.5 dB (50% louder) since the first version, at the developer's request.
+const BLOOD_LAYERS := [[0.0, 1.0, 3.5], [0.03, 0.94, -0.5], [0.06, 0.88, -2.5]]
 const VOICE_BUS := &"Voice"
 ## Echo delay in milliseconds, how long the echo rings after the voice ends, and bass boost.
 const VOICE_ECHO_MS := 220.0
@@ -42,6 +43,8 @@ const DUCK_TIME := 0.3
 
 var _voices_playing := 0
 var _music_level := 1.0
+## The level music's own volume (set on its Music node), which the fades and dips are relative to.
+var _music_base_db := 0.0
 var _duck_tween: Tween
 var _black: ColorRect
 var _music: AudioStreamPlayer
@@ -77,6 +80,8 @@ func _run() -> void:
 			node.free()
 	# Fade the level's music up with the picture. Volume is in decibels, so fade a 0-1 amount instead.
 	_music = tree.current_scene.get_node_or_null("Music") as AudioStreamPlayer
+	if _music:
+		_music_base_db = _music.volume_db
 	_set_music_level(0.0)
 	var fade := create_tween().set_parallel()
 	fade.tween_property(_black, "modulate:a", 0.0, FADE_TIME)
@@ -180,7 +185,7 @@ func _voice_bus() -> StringName:
 func _set_music_level(amount: float) -> void:
 	_music_level = amount
 	if _music:
-		_music.volume_db = linear_to_db(maxf(amount, 0.0001))
+		_music.volume_db = _music_base_db + linear_to_db(maxf(amount, 0.0001))
 
 
 func _wait(seconds: float) -> void:
