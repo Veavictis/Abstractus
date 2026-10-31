@@ -11,7 +11,8 @@ const DROP_SCENE := preload("res://scenes/pickups/point_drop.tscn")
 const BURST_SCENE := preload("res://scenes/effects/pixel_burst.tscn")
 
 @export var speed := 50.0
-@export var max_health := 2
+## Health can be fractional: the beat pulse does half a hit.
+@export var max_health := 2.0
 ## Kinds of point dots this enemy can drop, picked by their weights.
 @export var drop_table: Array[PointDropKind] = []
 
@@ -36,11 +37,14 @@ func _physics_process(_delta: float) -> void:
 		_sprite.flip_h = direction.x < 0.0
 
 
-func hit(damage: int) -> void:
+func hit(damage: float) -> void:
+	# A shot and the beat pulse can both land in the frame it dies; count only the first.
+	if is_queued_for_deletion():
+		return
 	health -= damage
 	_sprite.modulate = Color(3, 3, 3)
 	create_tween().tween_property(_sprite, "modulate", Color.WHITE, 0.1)
-	if health <= 0:
+	if health <= 0.0:
 		killed.emit()
 		_drop_points()
 		_burst()

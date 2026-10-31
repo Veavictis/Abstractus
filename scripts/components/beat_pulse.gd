@@ -2,7 +2,8 @@ class_name BeatPulse
 extends Node
 ## Listens to the Music bus, works out the song's tempo, and keeps a steady beat in time
 ## with it, so any track works. On each beat it starts a ring of color that spreads out
-## from `center` (the player), drawn by the background shader.
+## from `center` (the player) as far as the player's pulse reach, drawn by the background
+## shader. The level also connects `beat` to Player.pulse, which does the damage.
 ##
 ## How it hears a beat: the bus's SpectrumAnalyzer effect (default_bus_layout.tres) reports
 ## how loud each frequency is. Kick drums live in the low end, so this tracks the loudness
@@ -13,7 +14,8 @@ extends Node
 ## the rings fire on that grid, so they come at a steady pace even when kicks are missed.
 ##
 ## Shader values it sets every frame (declared in project.godot):
-## `beat_origin` (world position of the rings' center), `beat_ages` (seconds since each of
+## `beat_origin` (world position of the rings' center), `beat_inner` and `beat_outer` (where
+## they start and stop, in pixels from it), `beat_ages` (seconds since each of
 ## the last 4 rings started; large means none) and `beat_color_0`..`beat_color_3`.
 
 signal beat
@@ -185,9 +187,17 @@ func _on_beat() -> void:
 func _send_to_shader() -> void:
 	var origin := get_viewport().get_camera_2d().get_screen_center_position() \
 		if get_viewport().get_camera_2d() != null else Vector2.ZERO
+	var inner := 0.0
+	var outer := 0.0
 	if is_instance_valid(center):
 		origin = center.global_position
+	# The player's pulse stats set how far the rings go, so upgrades show up here too.
+	if center is Player:
+		inner = center.pulse_edge
+		outer = center.pulse_edge + center.pulse_reach
 	RenderingServer.global_shader_parameter_set("beat_origin", origin)
+	RenderingServer.global_shader_parameter_set("beat_inner", inner)
+	RenderingServer.global_shader_parameter_set("beat_outer", outer)
 	RenderingServer.global_shader_parameter_set(
 		"beat_ages", Vector4(_ages[0], _ages[1], _ages[2], _ages[3])
 	)

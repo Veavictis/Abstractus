@@ -36,6 +36,6 @@ process_mode = 3
 autoplay = true
 bus = &"Music"
 
-[node name="BeatPulse" type="Node" parent="."]
+[node name="BeatPulse" type="Node" parent="." node_paths=PackedStringArray("center")]
 script = ExtResource("7_beat")
 center = NodePath("../Player")

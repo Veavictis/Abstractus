@@ -20,6 +20,8 @@ var _spawn_cooldown := 0.0
 func _ready() -> void:
 	_player.died.connect(get_tree().reload_current_scene, CONNECT_DEFERRED)
 	_player.health_changed.connect(func(_health: int) -> void: _update_hud())
+	# On each beat of the music the player's pulse hurts nearby enemies.
+	$BeatPulse.beat.connect(_player.pulse)
 	_update_hud()
 
 

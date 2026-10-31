@@ -23,9 +23,12 @@ uniform float shimmer_bands = 6.0;
 uniform float twinkle_amount : hint_range(0.0, 1.0) = 0.35;
 
 // Set every frame by BeatPulse (scripts/components/beat_pulse.gd), declared in project.godot:
-// where the beat rings start (world position), seconds since each of the last 4 rings
+// where the beat rings start (world position), how far out they start and stop (the
+// player's edge and its pulse reach, in pixels), seconds since each of the last 4 rings
 // started, and each ring's color.
 global uniform vec2 beat_origin;
+global uniform float beat_inner;
+global uniform float beat_outer;
 global uniform vec4 beat_ages;
 global uniform vec4 beat_color_0;
 global uniform vec4 beat_color_1;
@@ -35,11 +38,9 @@ global uniform vec4 beat_color_3;
 uniform float black_threshold : hint_range(0.0, 1.0) = 0.12;
 // How strongly the black parts take on a ring's color at its brightest.
 uniform float beat_strength : hint_range(0.0, 1.0) = 0.35;
-// How fast a ring spreads out, in pixels per second.
-uniform float ring_speed = 1400.0;
-// How thick a ring is, in pixels.
+// Most pixels of color trailing behind a ring's front edge. A small pulse is filled in.
 uniform float ring_width = 140.0;
-// Seconds a ring takes to fade out completely.
+// Seconds a ring takes to spread from the inner to the outer edge, fading as it goes.
 uniform float ring_life = 0.36;
 
 varying vec2 world_position;
@@ -50,9 +51,15 @@ void vertex() {
 
 // How much of one ring covers a pixel `dist` pixels from the center, `age` seconds in.
 float ring(float dist, float age) {
-	float fade = clamp(1.0 - age / ring_life, 0.0, 1.0);
-	float edge = abs(dist - age * ring_speed) / (ring_width * 0.5);
-	return (1.0 - smoothstep(0.0, 1.0, edge)) * fade;
+	float progress = clamp(age / ring_life, 0.0, 1.0);
+	float front = mix(beat_inner, beat_outer, progress);
+	float behind = front - dist;
+	if (dist < beat_inner || behind < -1.0) {
+		return 0.0;
+	}
+	// Soft 1-pixel front edge, then fading out over ring_width behind it.
+	float body = 1.0 - smoothstep(0.0, ring_width, behind);
+	return body * clamp(behind + 1.0, 0.0, 1.0) * (1.0 - progress);
 }
 
 float hash(vec2 p) {

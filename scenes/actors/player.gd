@@ -9,6 +9,8 @@ signal points_changed(points: int)
 signal died
 
 const SHOT_SCENE := preload("res://scenes/actors/player_shot.tscn")
+## Rough distance from an enemy's center to the edge of its sprite, for the beat pulse.
+const ENEMY_EDGE := 20.0
 
 @export var speed := 120.0
 @export var max_health := 10
@@ -17,6 +19,12 @@ const SHOT_SCENE := preload("res://scenes/actors/player_shot.tscn")
 @export var pickup_radius := 64.0
 ## Speed, in pixels per second, at which pulled-in dots start flying. Upgrades can raise it.
 @export var pickup_speed := 120.0
+## The beat pulse: on each beat of the music a ring spreads this many pixels out from the
+## player's edge and hurts every enemy it touches. Upgrades can raise both.
+@export var pulse_reach := 5.0
+@export var pulse_damage := 0.5
+## Distance from the player's center to the edge of its sprite, where the pulse starts.
+@export var pulse_edge := 22.0
 ## Seconds between contact hits while an enemy is touching the player.
 @export var hurt_interval := 0.5
 
@@ -78,6 +86,14 @@ func _fire() -> void:
 	shot.global_position = global_position
 	shot.direction = aim_direction
 	get_parent().add_child(shot)
+
+
+## Called on each beat (BeatPulse.beat). Hurts every enemy whose sprite the ring reaches.
+func pulse() -> void:
+	var reach := pulse_edge + pulse_reach + ENEMY_EDGE
+	for enemy: Enemy in get_tree().get_nodes_in_group("enemies"):
+		if global_position.distance_to(enemy.global_position) <= reach:
+			enemy.hit(pulse_damage)
 
 
 func add_points(amount: int) -> void:
