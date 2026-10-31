@@ -22,14 +22,38 @@ uniform float shimmer_bands = 6.0;
 // Per-pixel twinkle on the outline itself.
 uniform float twinkle_amount : hint_range(0.0, 1.0) = 0.35;
 
-// Set every frame by BeatPulse (scripts/components/beat_pulse.gd): 1.0 on a beat of the
-// music, fading to 0, and the color picked for that beat. Declared in project.godot.
-global uniform float beat_pulse;
-global uniform vec4 beat_color;
+// Set every frame by BeatPulse (scripts/components/beat_pulse.gd), declared in project.godot:
+// where the beat rings start (world position), seconds since each of the last 4 rings
+// started, and each ring's color.
+global uniform vec2 beat_origin;
+global uniform vec4 beat_ages;
+global uniform vec4 beat_color_0;
+global uniform vec4 beat_color_1;
+global uniform vec4 beat_color_2;
+global uniform vec4 beat_color_3;
 // A pixel counts as black when its brightest channel is at most this.
 uniform float black_threshold : hint_range(0.0, 1.0) = 0.12;
-// How strongly the black parts take on the beat color at the peak of a beat.
-uniform float beat_strength : hint_range(0.0, 1.0) = 0.5;
+// How strongly the black parts take on a ring's color at its brightest.
+uniform float beat_strength : hint_range(0.0, 1.0) = 0.35;
+// How fast a ring spreads out, in pixels per second.
+uniform float ring_speed = 1400.0;
+// How thick a ring is, in pixels.
+uniform float ring_width = 140.0;
+// Seconds a ring takes to fade out completely.
+uniform float ring_life = 0.36;
+
+varying vec2 world_position;
+
+void vertex() {
+	world_position = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
+}
+
+// How much of one ring covers a pixel `dist` pixels from the center, `age` seconds in.
+float ring(float dist, float age) {
+	float fade = clamp(1.0 - age / ring_life, 0.0, 1.0);
+	float edge = abs(dist - age * ring_speed) / (ring_width * 0.5);
+	return (1.0 - smoothstep(0.0, 1.0, edge)) * fade;
+}
 
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
@@ -47,10 +71,15 @@ void fragment() {
 	float shimmer = 1.0 - shimmer_amount + shimmer_amount * wave;
 	float pulse = 1.0 - pulse_amount * (0.5 + 0.5 * cos(TIME * TAU * pulse_rate));
 
-	// The black parts flash the beat color. Near-black blends in softly so edges stay smooth.
+	// Rings of the beat colors spread through the black parts. Near-black blends in softly so
+	// edges stay smooth. Distance is in whole pixels, for a pixel-art edge.
 	float brightest = max(color.r, max(color.g, color.b));
-	float black = 1.0 - smoothstep(black_threshold, black_threshold + 0.05, brightest);
-	color.rgb = mix(color.rgb, beat_color.rgb, black * beat_pulse * beat_strength);
+	float black = (1.0 - smoothstep(black_threshold, black_threshold + 0.05, brightest)) * beat_strength;
+	float dist = length(floor(world_position) - floor(beat_origin));
+	color.rgb = mix(color.rgb, beat_color_0.rgb, black * ring(dist, beat_ages.x));
+	color.rgb = mix(color.rgb, beat_color_1.rgb, black * ring(dist, beat_ages.y));
+	color.rgb = mix(color.rgb, beat_color_2.rgb, black * ring(dist, beat_ages.z));
+	color.rgb = mix(color.rgb, beat_color_3.rgb, black * ring(dist, beat_ages.w));
 
 	if (is_white(color)) {
 		float twinkle = 0.5 + 0.5 * sin(TIME * 5.0 + hash(pixel) * TAU);

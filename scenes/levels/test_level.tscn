@@ -38,3 +38,4 @@ bus = &"Music"
 
 [node name="BeatPulse" type="Node" parent="."]
 script = ExtResource("7_beat")
+center = NodePath("../Player")
