@@ -8,8 +8,10 @@ extends Control
 
 @export var text := "ABSTRACTUS"
 @export var font_size := 72
-## Leave empty to use Godot's default font.
+## Leave empty to use Orbitron (assets/fonts) at `weight`.
 @export var font: Font
+## Orbitron's thickness when `font` is empty: 400 regular, 700 bold, 900 black.
+@export_range(400, 900, 100) var weight := 700
 ## Placeholder colors, one per letter (they repeat if there are more letters than colors).
 @export var letter_colors: Array[Color] = [
 	Color("ff4d6d"), Color("ff9f43"), Color("ffd93d"), Color("6bff6b"), Color("3dffd0"),
@@ -26,7 +28,11 @@ extends Control
 ## Multiplies the glow and the brightness of the inside. The menu buttons go to 1.5 on hover.
 @export var brightness := 1.0
 
+const ORBITRON := preload("res://assets/fonts/Orbitron-Variable.ttf")
+
 var _time := 0.0
+var _orbitron: FontVariation
+var _orbitron_weight := 0
 
 
 func _process(delta: float) -> void:
@@ -82,4 +88,12 @@ func _letter_widths() -> Array[float]:
 
 
 func _font() -> Font:
-	return font if font else get_theme_default_font()
+	if font:
+		return font
+	if _orbitron == null or _orbitron_weight != weight:
+		# Orbitron is a variable font: one file, any weight, picked through its "wght" axis.
+		_orbitron = FontVariation.new()
+		_orbitron.base_font = ORBITRON
+		_orbitron.variation_opentype = {TextServerManager.get_primary_interface().name_to_tag("wght"): weight}
+		_orbitron_weight = weight
+	return _orbitron
