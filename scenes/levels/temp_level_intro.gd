@@ -19,7 +19,7 @@ const SMASH_TIME := 0.18
 const SMASH_START_SCALE := 4.0
 ## How hard and how long the screen shakes when the words land.
 const SHAKE_PIXELS := 10.0
-const SHAKE_TIME := 0.35
+const SHAKE_TIME := 1.5
 ## Every this many pixels of the words becomes one particle.
 const PIXEL_STEP := 3
 
@@ -166,7 +166,7 @@ func _snapshot(text: String) -> Image:
 
 func _shake() -> void:
 	var shake := create_tween()
-	var steps := 8
+	var steps := int(SHAKE_TIME * 30.0)
 	for i in steps:
 		var strength := SHAKE_PIXELS * (1.0 - float(i) / steps)
 		shake.tween_property(self, "offset", Vector2(randf_range(-1, 1), randf_range(-1, 1)) * strength, SHAKE_TIME / steps)
