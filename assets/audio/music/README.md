@@ -1,5 +1,9 @@
 # Music
 
+The developer drops every audio file (music, voice, sound effects) into `SFX_MUSIC/` at the project root.
+Godot and git both ignore that folder (`SFX_MUSIC/.gdignore`, `.gitignore`). What the game uses is copied
+from there into `assets/audio/` (`music/`, `voice/`, `sfx/`).
+
 ## TEMP tracks: replace before any public build or Steam release
 
 Any file starting with `TEMP_` is a stand-in the developer picked to try the feel of a level.

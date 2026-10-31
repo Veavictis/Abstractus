@@ -34,3 +34,6 @@ desktop.ini
 # TEMP stand-in music (copyrighted, local only; see assets/audio/music/README.md)
 assets/audio/music/TEMP_*
 !assets/audio/music/TEMP_*.import
+
+# The developer's audio drop-off folder: the game uses copies in assets/audio/ (see assets/audio/music/README.md)
+/SFX_MUSIC/
