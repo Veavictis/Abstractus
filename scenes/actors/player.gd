@@ -21,7 +21,7 @@ const ENEMY_EDGE := 20.0
 @export var pickup_speed := 120.0
 ## The beat pulse: on each beat of the music a ring spreads this many pixels out from the
 ## player's edge and hurts every enemy it touches. Upgrades can raise both.
-@export var pulse_reach := 5.0
+@export var pulse_reach := 10.0
 @export var pulse_damage := 0.5
 ## Distance from the player's center to the edge of its sprite, where the pulse starts.
 @export var pulse_edge := 22.0
