@@ -35,7 +35,14 @@ const VOICE_ECHO_MS := 220.0
 const VOICE_ECHO_TAIL := 0.6
 const VOICE_BASS_DB := 6.0
 
+## While a voice line plays, the level music drops to this much of its volume (0-1), sliding
+## down and back up over DUCK_TIME seconds, so the words come through.
+const VOICE_DUCK := 0.35
+const DUCK_TIME := 0.3
+
 var _voices_playing := 0
+var _music_level := 1.0
+var _duck_tween: Tween
 var _black: ColorRect
 var _music: AudioStreamPlayer
 
@@ -104,7 +111,9 @@ func _run() -> void:
 	# Don't cut off a voice (or its echo) that's still going.
 	while _voices_playing > 0:
 		await _wait(0.25)
-	await _wait(VOICE_ECHO_TAIL)
+	# ...and let the music slide back up before this goes away.
+	await _wait(VOICE_ECHO_TAIL + DUCK_TIME + 0.2)
+	_set_music_level(1.0)
 	queue_free()
 
 
@@ -116,6 +125,8 @@ func _say(stream: AudioStream, delay: float, pitch: float, volume_db: float) -> 
 	player.pitch_scale = pitch
 	player.volume_db = volume_db
 	add_child(player)
+	if _voices_playing == 0:
+		_duck_music(VOICE_DUCK)
 	_voices_playing += 1
 	if delay > 0.0:
 		await _wait(delay)
@@ -123,6 +134,19 @@ func _say(stream: AudioStream, delay: float, pitch: float, volume_db: float) -> 
 	await player.finished
 	_voices_playing -= 1
 	player.queue_free()
+	if _voices_playing == 0:
+		# Bring the music back once the echo has rung out, unless another line started.
+		await _wait(VOICE_ECHO_TAIL)
+		if _voices_playing == 0:
+			_duck_music(1.0)
+
+
+## Slides the level music to `amount` (0-1) of its volume.
+func _duck_music(amount: float) -> void:
+	if _duck_tween:
+		_duck_tween.kill()
+	_duck_tween = create_tween()
+	_duck_tween.tween_method(_set_music_level, _music_level, amount, DUCK_TIME)
 
 
 ## The Voice bus: echo and a little bass on the voice lines. It goes straight to Master, so the
@@ -154,6 +178,7 @@ func _voice_bus() -> StringName:
 
 
 func _set_music_level(amount: float) -> void:
+	_music_level = amount
 	if _music:
 		_music.volume_db = linear_to_db(maxf(amount, 0.0001))
 
