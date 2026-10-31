@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/ui/cursor.tscn" id="2_cursor"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://scenes/main/temp_title_background.gd" id="5_scroll"]
 [ext_resource type="Script" path="res://scripts/components/chunk_grid.gd" id="6_grid"]
 [ext_resource type="Script" path="res://scenes/main/temp_title_button.gd" id="7_button"]
+[ext_resource type="Script" path="res://scenes/main/temp_title_dancer.gd" id="8_dancer"]
+[ext_resource type="Script" path="res://scripts/components/art_sprite.gd" id="9_art"]
 
 [node name="TempTitleScreen" type="Control"]
 layout_mode = 3
@@ -32,6 +34,26 @@ script = ExtResource("5_scroll")
 
 [node name="ChunkGrid" type="Node2D" parent="ScrollingBackground"]
 script = ExtResource("6_grid")
+
+[node name="DancerLeft" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(330, 350)
+script = ExtResource("8_dancer")
+
+[node name="Sprite" type="Sprite2D" parent="DancerLeft"]
+script = ExtResource("9_art")
+art_path = "res://assets/art/sprites/enemy.png"
+placeholder_color = Color(0.45, 0.45, 0.45, 1)
+
+[node name="DancerRight" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(630, 350)
+script = ExtResource("8_dancer")
+
+[node name="Sprite" type="Sprite2D" parent="DancerRight"]
+script = ExtResource("9_art")
+art_path = "res://assets/art/sprites/enemy.png"
+placeholder_color = Color(0.45, 0.45, 0.45, 1)
 
 [node name="Logo" type="Control" parent="."]
 layout_mode = 1
@@ -120,6 +142,16 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Back"
 script = ExtResource("7_button")
+
+[node name="FadeIn" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true

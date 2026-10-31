@@ -7,6 +7,10 @@ extends Control
 ## volume slider controls it.
 
 const GAME_SCENE := "res://scenes/levels/test_level.tscn"
+## The screen fades up from black for this long, and nothing can be clicked or pressed until it ends.
+const FADE_TIME := 5.0
+
+var _fading := true
 
 
 func _ready() -> void:
@@ -18,9 +22,26 @@ func _ready() -> void:
 	%MusicVolume.value = Game.music_volume
 	%MusicVolume.value_changed.connect(Game.set_music_volume)
 	%OptionsPanel.visible = false
-	%Play.grab_focus()
+	# The music starts at full volume with the fade.
 	if %Music.stream:
 		%Music.play()
+	var tween := create_tween()
+	tween.tween_property(%FadeIn, "modulate:a", 0.0, FADE_TIME)
+	tween.finished.connect(_on_fade_finished)
+
+
+## Swallows every click and key press while the screen is fading up.
+func _input(_event: InputEvent) -> void:
+	if _fading:
+		get_viewport().set_input_as_handled()
+
+
+func _on_fade_finished() -> void:
+	_fading = false
+	%FadeIn.visible = false
+	%Play.grab_focus()
+	%DancerLeft.enter()
+	%DancerRight.enter(0.3)
 
 
 func _unhandled_input(event: InputEvent) -> void:
