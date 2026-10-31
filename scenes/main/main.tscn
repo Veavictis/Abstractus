@@ -1,34 +1,129 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/ui/cursor.tscn" id="2_cursor"]
+[ext_resource type="Script" path="res://scenes/main/temp_title_logo.gd" id="3_logo"]
+[ext_resource type="AudioStream" uid="uid://ekc6dh1rly1w" path="res://assets/audio/music/TEMP_vekk_title.ogg" id="4_music"]
+[ext_resource type="Script" path="res://scenes/main/temp_title_background.gd" id="5_scroll"]
+[ext_resource type="Script" path="res://scripts/components/chunk_grid.gd" id="6_grid"]
+[ext_resource type="Script" path="res://scenes/main/temp_title_button.gd" id="7_button"]
 
-[node name="Main" type="Node2D"]
+[node name="TempTitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_main")
 
 [node name="Background" type="ColorRect" parent="."]
-offset_right = 960.0
-offset_bottom = 540.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.0784314, 0.0784314, 0.109804, 1)
 
-[node name="Menu" type="VBoxContainer" parent="."]
-offset_left = 380.0
-offset_top = 200.0
-offset_right = 580.0
-offset_bottom = 340.0
-theme_override_constants/separation = 8
+[node name="ScrollingBackground" type="Node2D" parent="."]
+z_index = 100
+script = ExtResource("5_scroll")
 
-[node name="Title" type="Label" parent="Menu"]
-theme_override_font_sizes/font_size = 24
-text = "Abstractus"
-horizontal_alignment = 1
+[node name="ChunkGrid" type="Node2D" parent="ScrollingBackground"]
+script = ExtResource("6_grid")
+
+[node name="Logo" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 60.0
+offset_bottom = 220.0
+grow_horizontal = 2
+mouse_filter = 2
+script = ExtResource("3_logo")
+
+[node name="Menu" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -250.0
+offset_right = 80.0
+offset_bottom = -110.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 8
 
 [node name="Play" type="Button" parent="Menu"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "Play"
+script = ExtResource("7_button")
+
+[node name="Options" type="Button" parent="Menu"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Options"
+script = ExtResource("7_button")
 
 [node name="Exit" type="Button" parent="Menu"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "Exit"
+script = ExtResource("7_button")
+
+[node name="OptionsPanel" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -250.0
+offset_right = 110.0
+offset_bottom = -110.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="OptionsTitle" type="Label" parent="OptionsPanel"]
+layout_mode = 2
+text = "Options"
+horizontal_alignment = 1
+
+[node name="MusicRow" type="HBoxContainer" parent="OptionsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MusicLabel" type="Label" parent="OptionsPanel/MusicRow"]
+layout_mode = 2
+text = "Music"
+
+[node name="MusicVolume" type="HSlider" parent="OptionsPanel/MusicRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+
+[node name="Back" type="Button" parent="OptionsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"
+script = ExtResource("7_button")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("4_music")
+bus = &"Music"
 
 [node name="Cursor" parent="." instance=ExtResource("2_cursor")]
