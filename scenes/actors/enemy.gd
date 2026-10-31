@@ -12,7 +12,7 @@ const BURST_SCENE := preload("res://scenes/effects/pixel_burst.tscn")
 
 @export var speed := 50.0
 ## Health can be fractional: the beat pulse does half a hit.
-@export var max_health := 2.0
+@export var max_health := 1.0
 ## Kinds of point dots this enemy can drop, picked by their weights.
 @export var drop_table: Array[PointDropKind] = []
 
